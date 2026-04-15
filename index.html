@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<title>12-Month Airbike Plan</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: #0a0a0a; color: #e5e5e5; font-family: Georgia, 'Times New Roman', serif; min-height: 100vh; }
+  .mono { font-family: 'Courier New', monospace; }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  .header { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); border-bottom: 1px solid #333; padding: 32px 20px 24px; }
+  .header-inner { max-width: 720px; margin: 0 auto; }
+  .eyebrow { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 4px; color: #ef4444; text-transform: uppercase; margin-bottom: 8px; }
+  h1 { font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 8px; line-height: 1.2; }
+  .subtitle { font-size: 14px; color: #999; margin: 0; line-height: 1.5; }
+  .sources { font-size: 12px; color: #666; margin: 8px 0 0; font-family: 'Courier New', monospace; }
+  .toggles { display: flex; gap: 8px; padding: 16px 0; flex-wrap: wrap; }
+  .toggle-btn { background: #1a1a1a; border: 1px solid #333; color: #999; padding: 8px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: 'Courier New', monospace; }
+  .toggle-btn.active { background: #1e3a5f; color: #60a5fa; }
+  .panel { background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: none; }
+  .panel.open { display: block; }
+  .panel.science-panel { background: #0d1117; border-color: #1e3a5f; }
+  .panel h3 { font-size: 15px; color: #60a5fa; margin: 0 0 12px; font-family: 'Courier New', monospace; }
+  .panel p { font-size: 12px; color: #888; margin: 0 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 6px 8px; color: #888; font-weight: 500; font-size: 11px; font-family: 'Courier New', monospace; border-bottom: 1px solid #333; }
+  td { padding: 8px; border-bottom: 1px solid #1a1a1a; font-size: 12px; }
+  td.zone-name { font-weight: 600; }
+  .table-wrap { overflow-x: auto; }
+  .timing-rule { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a; }
+  .timing-rule:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .timing-rule-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .timing-rule-detail { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 4px; }
+  .timing-rule-source { font-size: 11px; color: #666; font-family: 'Courier New', monospace; }
+  .projection-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
+  .projection-month { width: 80px; font-size: 12px; color: #888; font-family: 'Courier New', monospace; flex-shrink: 0; }
+  .projection-bar-wrap { flex: 1; }
+  .projection-bar-bg { height: 20px; background: #1a1a1a; border-radius: 4px; overflow: hidden; position: relative; }
+  .projection-bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .projection-bar-label { position: absolute; right: 8px; top: 2px; font-size: 11px; color: #fff; font-family: 'Courier New', monospace; font-weight: 700; }
+  .projection-weight { width: 60px; font-size: 12px; color: #999; font-family: 'Courier New', monospace; text-align: right; flex-shrink: 0; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #333; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab { background: none; border: none; border-bottom: 2px solid transparent; color: #666; padding: 12px 14px; font-size: 13px; cursor: pointer; white-space: nowrap; font-family: 'Courier New', monospace; font-weight: 400; transition: all 0.2s; }
+  .tab.active { border-bottom-color: #ef4444; color: #fff; font-weight: 700; }
+  .phase-content { padding-top: 20px; padding-bottom: 40px; display: none; }
+  .phase-content.active { display: block; }
+  .phase-content h2 { font-size: 22px; color: #fff; margin: 0 0 4px; font-weight: 700; }
+  .phase-weeks { font-size: 13px; color: #ef4444; font-family: 'Courier New', monospace; margin-bottom: 4px; }
+  .phase-subtitle { font-size: 15px; color: #ccc; margin-bottom: 12px; }
+  .goal-box { background: #111; border-left: 3px solid #22c55e; padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 16px; }
+  .goal-label { font-size: 11px; color: #22c55e; font-family: 'Courier New', monospace; margin-bottom: 4px; letter-spacing: 1px; }
+  .goal-text { font-size: 14px; color: #e5e5e5; line-height: 1.6; }
+  .science-box { background: #0d1117; border: 1px solid #1e3a5f; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; }
+  .science-label { font-size: 11px; color: #60a5fa; font-family: 'Courier New', monospace; margin-bottom: 4px; letter-spacing: 1px; }
+  .science-text { font-size: 13px; color: #b0b0b0; line-height: 1.7; }
+  .section-h3 { font-size: 16px; color: #fff; margin: 0 0 12px; }
+  .day-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+  .day-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .day-label { font-size: 13px; font-weight: 700; color: #fff; font-family: 'Courier New', monospace; min-width: 32px; }
+  .day-type { font-size: 14px; font-weight: 600; }
+  .day-session { font-size: 14px; color: #fff; font-weight: 600; margin-bottom: 4px; margin-left: 42px; }
+  .day-details { font-size: 13px; color: #aaa; line-height: 1.6; margin-left: 42px; }
+  .day-timing { font-size: 11px; color: #666; margin-top: 6px; margin-left: 42px; font-family: 'Courier New', monospace; }
+  .progression-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
+  .progression-row { padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 13px; color: #ccc; line-height: 1.6; }
+  .progression-row:last-child { border-bottom: none; }
+  .progression-row.deload { color: #f59e0b; font-weight: 600; }
+  .rules-box { margin-top: 24px; background: #1a0a0a; border: 1px solid #4a1a1a; border-radius: 8px; padding: 16px; display: none; }
+  .rules-box.show { display: block; }
+  .rules-box h3 { font-size: 15px; color: #ef4444; margin: 0 0 12px; font-family: 'Courier New', monospace; }
+  .rules-box .rules-text { font-size: 13px; color: #ddd; line-height: 1.8; }
+  .rules-box .rules-text strong { color: #fff; }
+  .rules-box .rules-text > div { margin-bottom: 8px; }
+  .systems-box { background: #0d1117; border: 1px solid #1e3a5f; border-radius: 8px; padding: 16px; margin-bottom: 40px; }
+  .systems-box h3 { font-size: 15px; color: #60a5fa; margin: 0 0 16px; font-family: 'Courier New', monospace; }
+  .system-item { margin-bottom: 16px; }
+  .system-item:last-child { margin-bottom: 0; }
+  .system-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .system-text { font-size: 13px; color: #b0b0b0; line-height: 1.6; }
+  .italic-note { font-size: 11px; color: #666; margin-top: 12px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="eyebrow">Research-Backed Protocol</div>
+    <h1>12-Month Airbike<br>Cardiovascular Overhaul</h1>
+    <p class="subtitle">From ~32 VO₂max → 50+ VO₂max · 40yo, 280lb, 6'0" male</p>
+    <p class="sources">Based on: Helgerud et al. 2007 · Seiler 2010 · Stöggl &amp; Sperlich 2014 · Bacon et al. 2013 · Wisløff et al. 2007</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="toggles">
+    <button class="toggle-btn" data-toggle="zones">HR Zones &amp; RPM</button>
+    <button class="toggle-btn" data-toggle="timing">Cardio + Lifting Timing</button>
+    <button class="toggle-btn" data-toggle="projections">VO₂max Projections</button>
+  </div>
+
+  <!-- Zones Panel -->
+  <div class="panel" id="zones-panel">
+    <h3>Your Heart Rate Zones (Age 40, HRmax ≈ 180)</h3>
+    <p>Using 220−age formula. Get a chest strap HR monitor — wrist monitors are unreliable at high intensity.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>%HRmax</th><th>BPM</th><th>RPM*</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="zone-name" style="color:#999">Zone 1</td><td class="mono">50–60%</td><td class="mono" style="color:#fff">90–108</td><td class="mono">30–40</td><td>Warmup / cooldown / active recovery</td></tr>
+          <tr><td class="zone-name" style="color:#22c55e">Zone 2</td><td class="mono">60–70%</td><td class="mono" style="color:#fff">108–126</td><td class="mono">40–55</td><td>Aerobic base building (the bulk of your work)</td></tr>
+          <tr><td class="zone-name" style="color:#999">Zone 3</td><td class="mono">70–80%</td><td class="mono" style="color:#fff">126–144</td><td class="mono">55–62</td><td>Tempo / 'gray zone' — minimize time here</td></tr>
+          <tr><td class="zone-name" style="color:#f97316">Zone 4</td><td class="mono">80–90%</td><td class="mono" style="color:#fff">144–162</td><td class="mono">60–70</td><td>Lactate threshold / tempo intervals</td></tr>
+          <tr><td class="zone-name" style="color:#ef4444">Zone 5</td><td class="mono">90–95%+</td><td class="mono" style="color:#fff">162–171+</td><td class="mono">65–80+</td><td>VO₂max intervals (Norwegian 4×4)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="italic-note">*RPMs are approximate for a 280lb male on a standard Assault/Echo bike. At your weight, the bike provides MORE resistance than for a lighter person at the same RPM — your actual RPM targets may be 5–10 lower. Always defer to HR over RPM.</p>
+  </div>
+
+  <!-- Timing Panel -->
+  <div class="panel" id="timing-panel">
+    <h3>When to Bike vs. When to Lift</h3>
+    <div id="timing-rules"></div>
+  </div>
+
+  <!-- Projections Panel -->
+  <div class="panel" id="projections-panel">
+    <h3>Projected VO₂max &amp; Weight Timeline</h3>
+    <p>Conservative estimates assuming consistent training + moderate caloric deficit. Weight loss alone improves relative VO₂max since it's measured per kg of body weight.</p>
+    <div id="projections-list"></div>
+    <p class="italic-note">Note: A 40-year-old male at 50+ VO₂max is in the top 5% for his age group. The combination of improved absolute oxygen uptake AND weight loss creates a multiplier effect on relative VO₂max. Bacon et al. (2013) meta-analysis confirms 15–20% VO₂max improvements are achievable with interval training. Greater gains (up to 96% in one PMC case study) are possible with high adherence and progressive volume to 300+ min/week.</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabs"></div>
+
+  <!-- Phase content rendered into here -->
+  <div id="phase-container"></div>
+
+  <!-- Three Energy Systems -->
+  <div class="systems-box">
+    <h3>THE THREE SYSTEMS YOU'RE TRAINING</h3>
+    <div class="system-item">
+      <div class="system-title" style="color:#22c55e">1. Aerobic Base (Zone 2) — "The Engine"</div>
+      <div class="system-text">Builds mitochondrial density, capillary networks, cardiac stroke volume, and fat oxidation. This is 75–80% of your total training volume. Without this foundation, HIIT gains plateau within weeks. Research (Seiler, 2010) shows elite endurance athletes spend 80% of their time here — and you should too.</div>
+    </div>
+    <div class="system-item">
+      <div class="system-title" style="color:#ef4444">2. VO₂max (Norwegian 4×4) — "The Ceiling"</div>
+      <div class="system-text">The 4×4 protocol directly raises your maximum oxygen uptake by forcing the heart to pump at near-maximal stroke volume for sustained periods. Helgerud et al. (2007) showed 11% VO₂max improvement in 8 weeks. The Wen et al. (2018) meta-analysis confirmed that intervals longer than 2 minutes with total high-intensity volume exceeding 15 minutes per session are optimal for VO₂max development.</div>
+    </div>
+    <div class="system-item">
+      <div class="system-title" style="color:#f97316">3. Lactate Threshold — "The Sustainable Speed"</div>
+      <div class="system-text">Training at 80–88% HRmax in sustained blocks (5–8 min) improves your body's ability to clear lactate and sustain higher intensities before 'hitting the wall.' This determines how long you can work at a high percentage of your VO₂max. Over-under intervals (Phase 4) further train lactate buffering by oscillating above and below threshold.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const phases = [
+  {
+    id: "phase1",
+    name: "Phase 1: Foundation",
+    weeks: "Weeks 1–6",
+    tabLabel: "W1–6",
+    subtitle: "Build the aerobic engine & learn the bike",
+    goal: "Establish base aerobic capacity, adapt joints/tendons, learn pacing by RPM and HR. Target: VO₂max ~33–36.",
+    science: "Sedentary individuals see initial 1–3% VO₂max gains in weeks 1–4 from plasma volume expansion and neural adaptations (ACSM, 2021). Zone 2 work builds mitochondrial density and capillary networks without excessive fatigue, creating the foundation all future intensity depends on.",
+    weeklySchedule: [
+      { day: "Mon", type: "Zone 2 Engine Builder", session: "20 min → 30 min (add 2 min/week)", details: "40–50 RPM, arms active but relaxed. HR 60–70% max (~108–126 bpm for age 40). Nasal breathing only — if you can't breathe through your nose, slow down.", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
+      { day: "Tue", type: "Strength Training", session: "Your normal lifting session", details: "No airbike today. Full recovery for Wednesday.", timing: "Any time", color: "#6b7280" },
+      { day: "Wed", type: "Zone 2 Engine Builder", session: "20 min → 30 min (add 2 min/week)", details: "Same protocol as Monday. Focus on smooth, rhythmic pedaling. Track average RPM and HR.", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
+      { day: "Thu", type: "Strength Training", session: "Your normal lifting session", details: "No airbike today.", timing: "Any time", color: "#6b7280" },
+      { day: "Fri", type: "Zone 2 Engine Builder", session: "25 min → 35 min (add 2 min/week)", details: "Slightly longer session. Same intensity. This is your weekly 'long ride.'", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
+      { day: "Sat", type: "Intro Intervals (Week 3+)", session: "Wk 1–2: OFF. Wk 3+: 6×30s ON / 90s OFF", details: "Week 3 onward: 5 min warmup → 6 rounds of 30s at 65–70 RPM (RPE 7) / 90s at 35 RPM recovery → 5 min cooldown. Total: ~22 min.", timing: "Morning, NOT same day as lifting", color: "#f59e0b" },
+      { day: "Sun", type: "OFF", session: "Full rest or walk", details: "Recovery is where adaptation happens. Sleep 7–9 hrs.", timing: "—", color: "#ef4444" }
+    ],
+    progression: [
+      "Wk 1: 3 sessions (3×20 min Z2). Total: 60 min/week",
+      "Wk 2: 3 sessions (3×22 min Z2). Total: 66 min/week",
+      "Wk 3: 4 sessions (3×24 min Z2 + intro intervals). Total: ~94 min/week",
+      "Wk 4: 4 sessions (3×26 min Z2 + intervals). Total: ~100 min/week",
+      "Wk 5: 4 sessions (3×28 min Z2 + intervals 8×30s). Total: ~108 min/week",
+      "Wk 6: DELOAD — reduce all volume by 40%. Test: 10-min max cal time trial for baseline."
+    ],
+    showRules: true
+  },
+  {
+    id: "phase2",
+    name: "Phase 2: Aerobic Development",
+    weeks: "Weeks 7–14",
+    tabLabel: "W7–14",
+    subtitle: "Introduce the Norwegian 4×4 protocol",
+    goal: "Drive VO₂max with research-proven 4×4 intervals while continuing to deepen the aerobic base. Target: VO₂max ~37–41.",
+    science: "Helgerud et al. (2007) demonstrated 4×4 min intervals at 90–95% HRmax improved VO₂max by ~11% in 8 weeks — significantly more than moderate continuous training or shorter intervals. The 4-min duration is critical: it's long enough to drive the heart to near-maximal stroke volume, which is the primary mechanism of VO₂max improvement (Astorino et al., 2017).",
+    weeklySchedule: [
+      { day: "Mon", type: "Zone 2 Engine Builder", session: "30–40 min", details: "45–52 RPM, HR 60–70% max. Continue nasal breathing discipline. Add 2 min every 2 weeks.", timing: "Morning, or POST-lifting (after 10 min cooldown)", color: "#22c55e" },
+      { day: "Tue", type: "Norwegian 4×4 VO₂max", session: "~35 min total", details: "10 min warmup (build from 40→55 RPM) → 4×4 min at 60–70 RPM targeting 90–95% HRmax (~162–171 bpm) / 3 min active recovery at 35–40 RPM → 5 min cooldown. YOU MUST HIT 90% HRmax BY MIN 2 of each interval or you're going too easy.", timing: "Standalone session — no lifting same day if possible. If must combine, do AFTER lifting with 10 min rest.", color: "#ef4444" },
+      { day: "Wed", type: "Strength Training + Z2", session: "Lift + 20 min Z2 post-lift", details: "Lift first. Then 20 min easy airbike at 40–48 RPM as extended cooldown. HR stays under 65% max.", timing: "Z2 immediately after lifting is fine at this low intensity", color: "#22c55e" },
+      { day: "Thu", type: "Zone 2 Engine Builder", session: "35–45 min", details: "Your mid-week long Z2 session. 45–52 RPM. Conversational pace.", timing: "Separated from lifting", color: "#22c55e" },
+      { day: "Fri", type: "Strength Training", session: "Your normal lifting session", details: "No airbike. Recover for Saturday.", timing: "Any time", color: "#6b7280" },
+      { day: "Sat", type: "Threshold Intervals", session: "~30 min total", details: "8 min warmup → 3×5 min at 55–62 RPM (HR 80–88% max, RPE 7–8, 'can speak 3–4 words') / 3 min recovery at 38 RPM → 5 min cooldown. This targets lactate threshold specifically.", timing: "Standalone session", color: "#f97316" },
+      { day: "Sun", type: "OFF or Active Recovery", session: "OFF or 15 min at 35 RPM", details: "If you feel good: 15 min very easy spin, HR under 60% max. Otherwise full rest.", timing: "—", color: "#ef4444" }
+    ],
+    progression: [
+      "Wk 7: 5 sessions. ~140 min total. First Norwegian 4×4.",
+      "Wk 8: Same structure, aim to hold higher RPM in 4×4 intervals",
+      "Wk 9: Add 1 rep to threshold day (4×5 min). Z2 sessions +2 min",
+      "Wk 10: 4×4 target: sustain 65+ RPM all 4 intervals",
+      "Wk 11: Z2 sessions hit 40 min. Threshold: 4×6 min",
+      "Wk 12: DELOAD — cut volume 40%. Retest 10-min time trial.",
+      "Wk 13–14: Resume with Week 9 structure + 5% higher RPM targets"
+    ]
+  },
+  {
+    id: "phase3",
+    name: "Phase 3: Polarized Intensification",
+    weeks: "Weeks 15–28",
+    tabLabel: "W15–28",
+    subtitle: "80/20 polarized model with double 4×4 sessions",
+    goal: "Maximize VO₂max gains through proven polarized distribution: 80% easy / 20% hard. Target: VO₂max ~42–47.",
+    science: "The polarized training model (Seiler, 2010; Stöggl & Sperlich, 2014) distributes ~80% of volume at low intensity (Zone 2) and ~20% at high intensity. Stöggl & Sperlich found polarized training produced superior VO₂max and peak performance improvements compared to threshold-only or high-volume-only approaches. The meta-analysis by Bacon et al. (2013) in PLOS ONE confirmed that interval studies using 3–5 min intervals produced the largest VO₂max gains.",
+    weeklySchedule: [
+      { day: "Mon", type: "Zone 2 Engine Builder", session: "40–50 min", details: "48–55 RPM. As fitness grows, you'll hold higher RPM at the same HR. This is the proof it's working.", timing: "AM session or separated from PM lift by 6+ hrs", color: "#22c55e" },
+      { day: "Tue", type: "Norwegian 4×4 #1", session: "~38 min total", details: "10 min warmup → 4×4 min at 65–75 RPM (90–95% HRmax) / 3 min recovery → 5 min cooldown. Push RPM up as fitness allows — the bike gets harder exponentially.", timing: "Standalone AM session ideal. If combining with lift, do AFTER lifting.", color: "#ef4444" },
+      { day: "Wed", type: "Strength + Z2 Cooldown", session: "Lift + 25 min Z2", details: "Lift first. Then 25 min easy at 42–50 RPM. This does NOT count toward your 'hard' 20%.", timing: "Z2 immediately post-lift is fine", color: "#22c55e" },
+      { day: "Thu", type: "Zone 2 Long Session", session: "45–60 min", details: "This is your weekly long Z2. Build to 60 min by week 20. 48–55 RPM, conversational.", timing: "Separated from lifting", color: "#22c55e" },
+      { day: "Fri", type: "Norwegian 4×4 #2 + Strength", session: "4×4 intervals → Lift after", details: "Reverse order on this day: Do 4×4 intervals FIRST when fresh (cardiovascular priority), then lift. Or split AM bike / PM lift.", timing: "Bike AM, Lift PM ideal. Or bike first same session.", color: "#ef4444" },
+      { day: "Sat", type: "Threshold / Lactate Clearance", session: "~35 min total", details: "8 min warmup → 3–4×6 min at 57–65 RPM (HR 82–88% max) / 3 min recovery → 5 min cooldown. By week 20, progress to 4×8 min blocks.", timing: "Standalone session", color: "#f97316" },
+      { day: "Sun", type: "OFF or Easy Z1 Spin", session: "OFF or 20 min at 35 RPM", details: "Full rest preferred. Light spin only if recovery is solid.", timing: "—", color: "#ef4444" }
+    ],
+    progression: [
+      "Wk 15–16: 6 sessions, ~200 min/week. Two 4×4 sessions.",
+      "Wk 17–18: Z2 sessions reach 45–50 min. Threshold: 4×6 min.",
+      "Wk 19–20: Threshold progresses to 3×8 min. Z2 long hits 55 min.",
+      "Wk 21: DELOAD. Retest 10-min time trial + estimate VO₂max.",
+      "Wk 22–24: Resume. Push 4×4 RPM targets up 5%. Threshold: 4×8 min.",
+      "Wk 25–26: Z2 long hits 60 min. Total weekly volume ~230 min.",
+      "Wk 27–28: DELOAD. Full retest. Recalculate HR zones if weight has changed."
+    ]
+  },
+  {
+    id: "phase4",
+    name: "Phase 4: Peak Performance",
+    weeks: "Weeks 29–52",
+    tabLabel: "W29–52",
+    subtitle: "Advanced periodization & maintenance of elite fitness",
+    goal: "Continued VO₂max development with 4-week mesocycles (3 hard + 1 deload). Push toward genetic ceiling. Target: VO₂max ~47–55.",
+    science: "After 6 months, VO₂max gains slow as you approach your genetic ceiling (Bouchard et al., 2011 — genetics accounts for ~50% of VO₂max variability). However, a case study in PMC showed a 96% VO₂max improvement over 24 months in a previously sedentary individual who progressively increased training volume to 300 min/week. Weight loss also contributes: since VO₂max is measured in mL/kg/min, every pound lost while maintaining absolute oxygen uptake raises your relative VO₂max.",
+    weeklySchedule: [
+      { day: "Mon", type: "Zone 2 Engine Builder", session: "45–60 min", details: "50–58 RPM at same HR as before. Higher RPM at same HR = improved fitness. Track this metric monthly.", timing: "AM or separated from lifting", color: "#22c55e" },
+      { day: "Tue", type: "Norwegian 4×4 VO₂max", session: "~38 min", details: "4×4 min at 70–80+ RPM (90–95% HRmax). By now your work capacity is dramatically higher. 3 min recovery.", timing: "Standalone or pre-lift", color: "#ef4444" },
+      { day: "Wed", type: "Strength + Z2", session: "Lift + 25–30 min Z2", details: "Lift first. Easy Z2 cooldown.", timing: "Same session fine", color: "#22c55e" },
+      { day: "Thu", type: "Threshold / Over-Unders", session: "~40 min total", details: "NEW: Over-Under intervals. 8 min warmup → 4×8 min alternating 2 min at 88% HRmax / 1 min at 75% HRmax within each block / 3 min easy between blocks → cooldown. Trains lactate buffering.", timing: "Standalone", color: "#f97316" },
+      { day: "Fri", type: "Norwegian 4×4 #2 + Strength", session: "4×4 intervals → Lift", details: "Second weekly 4×4. Then lift.", timing: "Bike AM / Lift PM or bike-first same session", color: "#ef4444" },
+      { day: "Sat", type: "Z2 Long + Sprint Finisher", session: "50–60 min Z2 + 4×20s sprints", details: "Long Z2 ride, then finish with 4×20s all-out sprints (90+ RPM) / 2 min full recovery between sprints. Develops anaerobic power on top of aerobic base.", timing: "Standalone", color: "#22c55e" },
+      { day: "Sun", type: "OFF", session: "Full rest", details: "Non-negotiable by this phase. You're training 6 days/week at serious volume.", timing: "—", color: "#ef4444" }
+    ],
+    progression: [
+      "Wk 29–31: Build. ~250 min/week. 4×4 RPMs continue climbing.",
+      "Wk 32: DELOAD. Test 10-min time trial. Compare to all prior tests.",
+      "Wk 33–35: Build. Add Over-Under intervals. Total ~260 min/week.",
+      "Wk 36: DELOAD. Every 4th week, always.",
+      "Wk 37–48: Repeat 3+1 mesocycles. Vary interval structures monthly.",
+      "Wk 49–51: Peak block. Highest volume & intensity of the year.",
+      "Wk 52: Final DELOAD + comprehensive retest. Celebrate your transformation."
+    ]
+  }
+];
+
+const timingRules = [
+  { title: "Lift FIRST, Easy Cardio After", detail: "When combining in one session, always lift before Zone 2 cardio. The AMPK pathway activated by cardio inhibits the mTOR pathway needed for muscle growth. This interference effect is minimized when strength comes first (Concurrent Training meta-analyses, Wilson et al. 2012; updated Schumann et al. 2022).", source: "Hickson 1980; Wilson et al. 2012; ScienceDirect 2025" },
+  { title: "6+ Hour Gap for Hard Cardio", detail: "AMPK signaling remains elevated for ~3–4 hours post-cardio. If doing HIIT (4×4s, threshold work), separate from lifting by 6+ hours minimum. AM/PM splits are ideal. If forced to combine: do the modality that matters MORE to you first.", source: "Gymshark/Saunders; Barbell Medicine; PMC concurrent training reviews" },
+  { title: "Never HIIT Before a Hard Leg Day", detail: "Residual fatigue from high-intensity airbike work compromises squat/deadlift quality. Schedule your 4×4 sessions on upper body lifting days or standalone days.", source: "Stronger by Science; PMC meta-analysis on interference effect" },
+  { title: "Low Intensity = Low Interference", detail: "Zone 2 work at true conversational pace produces minimal interference with strength gains. It can safely follow any lifting session as an extended cooldown. This is well-supported even in the most conservative concurrent training research.", source: "Stronger by Science 2024 meta-analysis update" }
+];
+
+const projections = [
+  { month: "Start", vo2: 32, weight: 280, event: "Baseline test" },
+  { month: "Month 2", vo2: 35, weight: 272, event: "End Phase 1" },
+  { month: "Month 4", vo2: 39, weight: 262, event: "End Phase 2" },
+  { month: "Month 7", vo2: 44, weight: 250, event: "Mid Phase 3" },
+  { month: "Month 9", vo2: 47, weight: 242, event: "End Phase 3" },
+  { month: "Month 12", vo2: 52, weight: 232, event: "End Phase 4" }
+];
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// Render timing rules
+document.getElementById('timing-rules').innerHTML = timingRules.map(r => `
+  <div class="timing-rule">
+    <div class="timing-rule-title">${escapeHtml(r.title)}</div>
+    <div class="timing-rule-detail">${escapeHtml(r.detail)}</div>
+    <div class="timing-rule-source">Sources: ${escapeHtml(r.source)}</div>
+  </div>
+`).join('');
+
+// Render projections
+document.getElementById('projections-list').innerHTML = projections.map(p => {
+  const pct = ((p.vo2 - 25) / 35) * 100;
+  const grad = p.vo2 >= 50 ? 'linear-gradient(90deg, #22c55e, #16a34a)' : p.vo2 >= 40 ? 'linear-gradient(90deg, #f59e0b, #22c55e)' : 'linear-gradient(90deg, #ef4444, #f59e0b)';
+  return `
+    <div class="projection-row">
+      <div class="projection-month">${escapeHtml(p.month)}</div>
+      <div class="projection-bar-wrap">
+        <div class="projection-bar-bg">
+          <div class="projection-bar" style="width:${pct}%; background:${grad};"></div>
+          <span class="projection-bar-label">${p.vo2} mL/kg/min</span>
+        </div>
+      </div>
+      <div class="projection-weight">${p.weight}lb</div>
+    </div>`;
+}).join('');
+
+// Render tabs
+const tabsEl = document.getElementById('tabs');
+tabsEl.innerHTML = phases.map((p, i) => `<button class="tab${i===0?' active':''}" data-phase="${p.id}">${escapeHtml(p.tabLabel)}</button>`).join('');
+
+// Render phase content
+function renderPhase(phase) {
+  const days = phase.weeklySchedule.map(d => `
+    <div class="day-card" style="border-left:3px solid ${d.color}">
+      <div class="day-header">
+        <span class="day-label">${escapeHtml(d.day)}</span>
+        <span class="day-type" style="color:${d.color}">${escapeHtml(d.type)}</span>
+      </div>
+      <div class="day-session">${escapeHtml(d.session)}</div>
+      <div class="day-details">${escapeHtml(d.details)}</div>
+      <div class="day-timing">Timing: ${escapeHtml(d.timing)}</div>
+    </div>
+  `).join('');
+
+  const progression = phase.progression.map(p => `<div class="progression-row${p.includes('DELOAD')?' deload':''}">${escapeHtml(p)}</div>`).join('');
+
+  const rules = phase.showRules ? `
+    <div class="rules-box show">
+      <h3>NON-NEGOTIABLE RULES</h3>
+      <div class="rules-text">
+        <div><strong>1. Buy a chest strap HR monitor.</strong> Wrist-based is unreliable above 150 bpm. The entire program is built on HR zones. Polar H10 or Garmin HRM-Pro recommended.</div>
+        <div><strong>2. HR governs intensity, NOT RPM.</strong> RPMs are guidelines. If your HR is too high at the listed RPM, slow down. If too low, speed up. Your weight means the bike provides significantly more resistance — your RPMs will be lower than a 180lb person.</div>
+        <div><strong>3. Zone 2 must be truly easy.</strong> You should be able to hold a full conversation. If you can't, you're too hard. Ego is the #1 killer of Zone 2 training.</div>
+        <div><strong>4. Deload weeks are mandatory.</strong> Every 4–6 weeks, cut volume by 40%. This is where your body actually adapts. Skipping deloads leads to overtraining and stalled progress.</div>
+        <div><strong>5. Track everything.</strong> Log: date, session type, duration, avg RPM, avg HR, peak HR, RPE (1–10). Monthly: 10-min max calorie time trial. This data IS your proof of progress.</div>
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="phase-content active" id="content-${phase.id}">
+      <h2>${escapeHtml(phase.name)}</h2>
+      <div class="phase-weeks">${escapeHtml(phase.weeks)}</div>
+      <div class="phase-subtitle">${escapeHtml(phase.subtitle)}</div>
+      <div class="goal-box">
+        <div class="goal-label">GOAL</div>
+        <div class="goal-text">${escapeHtml(phase.goal)}</div>
+      </div>
+      <div class="science-box">
+        <div class="science-label">THE RESEARCH</div>
+        <div class="science-text">${escapeHtml(phase.science)}</div>
+      </div>
+      <h3 class="section-h3">Weekly Schedule</h3>
+      <div>${days}</div>
+      <h3 class="section-h3" style="margin-top:24px">Week-by-Week Progression</h3>
+      <div class="progression-box">${progression}</div>
+      ${rules}
+    </div>
+  `;
+}
+
+const phaseContainer = document.getElementById('phase-container');
+function showPhase(id) {
+  const phase = phases.find(p => p.id === id);
+  phaseContainer.innerHTML = renderPhase(phase);
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.phase === id));
+  window.scrollTo({ top: tabsEl.offsetTop - 10, behavior: 'smooth' });
+}
+
+tabsEl.addEventListener('click', e => {
+  if (e.target.dataset.phase) showPhase(e.target.dataset.phase);
+});
+
+// Initial render
+showPhase('phase1');
+
+// Toggle panels
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.toggle + '-panel';
+    const panel = document.getElementById(id);
+    const isOpen = panel.classList.toggle('open');
+    btn.classList.toggle('active', isOpen);
+  });
+});
+</script>
+</body>
+</html>
