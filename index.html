@@ -26,7 +26,7 @@
   button { font-family: inherit; }
 
   /* header */
-  .app-header { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); border-bottom: 1px solid var(--border); padding: 20px 16px 16px; }
+  .app-header { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); border-bottom: 1px solid var(--border); padding: calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 16px calc(16px + env(safe-area-inset-left)); }
   .app-header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .app-title { flex: 1; min-width: 0; }
   .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 4px; }
@@ -221,6 +221,57 @@
   .small { font-size: 12px; }
   .center { text-align: center; }
   .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  /* mobile text bumps — larger body copy + 16px inputs so iOS doesn't zoom on focus */
+  @media (max-width: 759px) {
+    html, body { font-size: 17px; }
+    .app-title h1 { font-size: 22px; }
+    .app-title .wk { font-size: 12px; }
+    .rx-card { padding: 22px; }
+    .rx-day { font-size: 12px; }
+    .rx-type { font-size: 24px; }
+    .rx-session { font-size: 17px; }
+    .rx-details { font-size: 15px; line-height: 1.7; }
+    .rx-tag { font-size: 14px; padding: 9px 13px; }
+    .rx-timing { font-size: 12px; }
+    .yest-line { font-size: 13px; }
+    .day-row .day-label { font-size: 13px; }
+    .day-row .day-type { font-size: 15px; }
+    .day-row .day-session { font-size: 14px; }
+    .form-field label { font-size: 11px; }
+    .form-field input, .form-field select, .form-field textarea { font-size: 16px; }
+    .completion-btns button { font-size: 13px; min-height: 52px; }
+    .save-btn { font-size: 15px; min-height: 56px; }
+    .banner { font-size: 14px; }
+    .banner-title { font-size: 12px; }
+    .panel p { font-size: 13px; }
+    .panel h3 { font-size: 16px; }
+    .system-title { font-size: 15px; }
+    .system-text { font-size: 14px; }
+    .timing-rule-title { font-size: 15px; }
+    .timing-rule-detail { font-size: 14px; }
+    .rules-text { font-size: 14px; line-height: 1.8; }
+    .phase-head h3 { font-size: 18px; }
+    .phase-head .phase-meta { font-size: 12px; }
+    .phase-subtitle { font-size: 14px; }
+    .phase-goal { font-size: 14px; }
+    .week-row .week-label { font-size: 13px; }
+    .week-row .week-dates { font-size: 11px; }
+    .week-row .week-vol { font-size: 12px; }
+    .week-adjustment { font-size: 12px; }
+    .week-nav-label { font-size: 14px; }
+    .week-nav-label .sub { font-size: 12px; }
+    .chart h3 { font-size: 13px; }
+    .chart .chart-sub { font-size: 12px; }
+    .chart-empty { font-size: 14px; }
+    .chart-foot { font-size: 12px; }
+    .stat-box .stat-label { font-size: 10px; }
+    .stat-box .stat-val { font-size: 24px; }
+    .view h2 { font-size: 24px; }
+    .view h2 small { font-size: 13px; }
+    table.zones td { font-size: 13px; }
+    table.zones th { font-size: 12px; }
+  }
 </style>
 </head>
 <body>
