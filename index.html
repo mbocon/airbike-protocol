@@ -2,398 +2,2048 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0a0a">
-<title>12-Month Airbike Plan</title>
+<title>52-Week Airbike Protocol</title>
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Airbike Protocol","short_name":"Airbike","start_url":".","scope":".","display":"standalone","background_color":"%230a0a0a","theme_color":"%230a0a0a","orientation":"portrait","icons":[]}'>
 <style>
+  :root {
+    --bg: #0a0a0a; --bg1: #111; --bg2: #1a1a1a;
+    --border: #333; --border2: #222; --border3: #1a1a1a;
+    --text: #e5e5e5; --text-dim: #999; --text-dimmer: #666; --text-brite: #fff;
+    --red: #ef4444; --green: #22c55e; --orange: #f97316; --blue: #60a5fa; --amber: #f59e0b; --gray: #6b7280;
+    --serif: Georgia, 'Times New Roman', serif;
+    --mono: 'Courier New', monospace;
+  }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; background: #0a0a0a; color: #e5e5e5; font-family: Georgia, 'Times New Roman', serif; min-height: 100vh; }
-  .mono { font-family: 'Courier New', monospace; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--serif); min-height: 100vh; font-size: 16px; }
+  body { padding-bottom: 88px; }
+  .mono { font-family: var(--mono); }
   .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
-  .header { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); border-bottom: 1px solid #333; padding: 32px 20px 24px; }
-  .header-inner { max-width: 720px; margin: 0 auto; }
-  .eyebrow { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 4px; color: #ef4444; text-transform: uppercase; margin-bottom: 8px; }
-  h1 { font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 8px; line-height: 1.2; }
-  .subtitle { font-size: 14px; color: #999; margin: 0; line-height: 1.5; }
-  .sources { font-size: 12px; color: #666; margin: 8px 0 0; font-family: 'Courier New', monospace; }
-  .toggles { display: flex; gap: 8px; padding: 16px 0; flex-wrap: wrap; }
-  .toggle-btn { background: #1a1a1a; border: 1px solid #333; color: #999; padding: 8px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: 'Courier New', monospace; }
-  .toggle-btn.active { background: #1e3a5f; color: #60a5fa; }
-  .panel { background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: none; }
-  .panel.open { display: block; }
-  .panel.science-panel { background: #0d1117; border-color: #1e3a5f; }
-  .panel h3 { font-size: 15px; color: #60a5fa; margin: 0 0 12px; font-family: 'Courier New', monospace; }
-  .panel p { font-size: 12px; color: #888; margin: 0 0 12px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 6px 8px; color: #888; font-weight: 500; font-size: 11px; font-family: 'Courier New', monospace; border-bottom: 1px solid #333; }
-  td { padding: 8px; border-bottom: 1px solid #1a1a1a; font-size: 12px; }
-  td.zone-name { font-weight: 600; }
+  a { color: var(--blue); }
+  button { font-family: inherit; }
+
+  /* header */
+  .app-header { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); border-bottom: 1px solid var(--border); padding: 20px 16px 16px; }
+  .app-header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .app-title { flex: 1; min-width: 0; }
+  .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 4px; }
+  .app-title h1 { font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 4px; line-height: 1.2; }
+  .app-title .wk { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+  .settings-btn { background: #1a1a1a; border: 1px solid var(--border); color: var(--text-dim); width: 44px; height: 44px; border-radius: 8px; font-family: var(--mono); font-size: 20px; cursor: pointer; flex-shrink: 0; line-height: 1; }
+  .settings-btn:hover { background: #222; color: #fff; }
+
+  /* bottom nav (top on desktop) */
+  .nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a0a; border-top: 1px solid var(--border); display: flex; padding: 6px 0 max(6px, env(safe-area-inset-bottom)); z-index: 20; }
+  .nav-btn { flex: 1; min-width: 44px; min-height: 52px; background: none; border: none; color: var(--text-dimmer); font-family: var(--mono); font-size: 10px; letter-spacing: 1px; cursor: pointer; padding: 6px 2px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+  .nav-btn .ni { font-family: var(--serif); font-size: 18px; line-height: 1; }
+  .nav-btn.active { color: var(--red); }
+  .nav-btn.active .ni { color: var(--red); }
+  @media (min-width: 760px) {
+    body { padding-bottom: 0; padding-top: 68px; }
+    .nav { position: fixed; top: 0; bottom: auto; border-top: none; border-bottom: 1px solid var(--border); padding: 8px 0; justify-content: center; gap: 8px; }
+    .nav-btn { flex: 0 0 auto; min-width: 96px; flex-direction: row; gap: 8px; }
+  }
+
+  /* views */
+  .view { display: none; padding: 20px 0 32px; }
+  .view.active { display: block; }
+  .view h2 { font-size: 22px; color: #fff; margin: 0 0 12px; font-weight: 700; }
+  .view h2 small { font-family: var(--mono); font-size: 12px; color: var(--text-dim); font-weight: normal; margin-left: 8px; }
+
+  /* banners */
+  .banner { background: #1a0a0a; border: 1px solid #4a1a1a; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #ddd; line-height: 1.6; }
+  .banner.info { background: #0d1117; border-color: #1e3a5f; }
+  .banner.success { background: #0a1a0a; border-color: #1a4a1a; }
+  .banner.warn { background: #1a1206; border-color: #4a3a1a; }
+  .banner-title { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; color: var(--red); font-weight: 700; }
+  .banner.info .banner-title { color: var(--blue); }
+  .banner.success .banner-title { color: var(--green); }
+  .banner.warn .banner-title { color: var(--amber); }
+
+  /* rx card (Today) */
+  .rx-card { background: #111; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; border-left-width: 4px; }
+  .rx-day { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
+  .rx-type { font-size: 22px; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+  .rx-session { font-size: 16px; color: #fff; font-weight: 600; margin-bottom: 12px; }
+  .rx-targets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .rx-tag { background: #1a1a1a; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-family: var(--mono); font-size: 13px; color: #fff; }
+  .rx-tag .lbl { color: var(--text-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+  .rx-details { font-size: 14px; color: #b5b5b5; line-height: 1.7; margin-bottom: 14px; }
+  .rx-timing { font-family: var(--mono); font-size: 11px; color: var(--text-dimmer); border-top: 1px solid var(--border3); padding-top: 10px; }
+
+  /* log form */
+  .log-form { background: #0e0e0e; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 20px; }
+  .log-form h3 { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin: 0 0 14px; text-transform: uppercase; letter-spacing: 2px; }
+  .form-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .form-row > .form-field { flex: 1 1 140px; }
+  .form-field { display: flex; flex-direction: column; }
+  .form-field label { font-family: var(--mono); font-size: 10px; color: var(--text-dimmer); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .form-field input, .form-field select, .form-field textarea { background: #1a1a1a; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 6px; font-family: var(--mono); font-size: 15px; min-height: 44px; width: 100%; }
+  .form-field textarea { font-family: var(--serif); min-height: 72px; resize: vertical; }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--blue); }
+  .form-field input[type="range"] { padding: 0; background: transparent; border: none; min-height: 44px; }
+  .completion-btns { display: flex; gap: 8px; }
+  .completion-btns button { flex: 1; min-height: 48px; background: #1a1a1a; border: 1px solid var(--border); color: var(--text-dim); font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; cursor: pointer; }
+  .completion-btns button.selected.yes { background: #0a1a0a; border-color: var(--green); color: var(--green); }
+  .completion-btns button.selected.partial { background: #1a1206; border-color: var(--amber); color: var(--amber); }
+  .completion-btns button.selected.no { background: #1a0a0a; border-color: var(--red); color: var(--red); }
+  .rpe-row { display: flex; align-items: center; gap: 12px; }
+  .rpe-row .rpe-val { font-family: var(--mono); font-size: 18px; color: #fff; min-width: 32px; text-align: right; }
+  .save-btn { width: 100%; min-height: 52px; background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 8px; cursor: pointer; margin-top: 14px; }
+  .save-btn:hover { background: #dc2626; }
+  .save-btn.saved { background: var(--green); }
+
+  /* yesterday summary */
+  .yest-card { background: #0d0d0d; border: 1px solid var(--border3); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
+  .yest-card h3 { font-family: var(--mono); font-size: 10px; color: var(--text-dimmer); margin: 0 0 6px; letter-spacing: 2px; text-transform: uppercase; }
+  .yest-line { font-family: var(--mono); font-size: 12px; color: #b5b5b5; }
+  .yest-line strong { color: #fff; }
+
+  /* week/plan day rows */
+  .day-row { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; border-left-width: 3px; }
+  .day-row.today { border-color: var(--red); background: #140a0a; }
+  .day-row .day-top { display: flex; align-items: center; gap: 10px; }
+  .day-row .day-label { font-family: var(--mono); font-size: 12px; font-weight: 700; color: #fff; min-width: 64px; }
+  .day-row .day-label .dow { display: block; }
+  .day-row .day-label .dnum { font-size: 10px; color: var(--text-dim); font-weight: normal; }
+  .day-row .day-type { flex: 1; font-weight: 600; font-size: 14px; line-height: 1.3; }
+  .day-row .day-status { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: #1a1a1a; }
+  .day-row .day-status.yes { color: var(--green); border: 1px solid #1a4a1a; }
+  .day-row .day-status.partial { color: var(--amber); border: 1px solid #4a3a1a; }
+  .day-row .day-status.no { color: var(--red); border: 1px solid #4a1a1a; }
+  .day-row .day-status.pending { color: var(--text-dimmer); border: 1px solid var(--border2); }
+  .day-row .day-session { font-size: 13px; color: #aaa; margin-top: 4px; margin-left: 74px; }
+  .day-row .day-expanded { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border3); }
+  .day-row.open .day-expanded { display: block; }
+
+  /* plan view */
+  .phase-accordion { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; background: #0e0e0e; }
+  .phase-head { padding: 14px 16px; cursor: pointer; background: #111; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .phase-head-left { flex: 1; }
+  .phase-head h3 { margin: 0 0 4px; font-size: 17px; color: #fff; }
+  .phase-head .phase-meta { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+  .phase-head .phase-arrow { font-family: var(--mono); color: var(--text-dim); transition: transform 0.2s; }
+  .phase-accordion.open .phase-head .phase-arrow { transform: rotate(90deg); }
+  .phase-body { padding: 0 14px 14px; display: none; }
+  .phase-accordion.open .phase-body { display: block; }
+  .phase-subtitle { font-size: 13px; color: #bbb; margin: 8px 0; font-style: italic; }
+  .phase-goal { background: #0d1117; border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 6px 6px 0; margin-bottom: 12px; font-size: 13px; color: #ccc; }
+  .phase-goal .lbl { font-family: var(--mono); font-size: 10px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+  .week-row { padding: 10px 12px; background: #0a0a0a; border: 1px solid #222; border-radius: 6px; margin-bottom: 6px; cursor: pointer; border-left-width: 3px; border-left-color: var(--gray); }
+  .week-row .week-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .week-row .week-label { font-family: var(--mono); font-size: 12px; color: #fff; font-weight: 700; }
+  .week-row .week-dates { font-family: var(--mono); font-size: 10px; color: var(--text-dimmer); margin-top: 2px; }
+  .week-row .week-vol { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+  .week-row.deload { border-left-color: var(--amber); }
+  .week-row.deload .week-label { color: var(--amber); }
+  .week-row.tt { border-left-color: var(--blue); }
+  .week-row.tt .week-label { color: var(--blue); }
+  .week-row.current { border-left-color: var(--red); background: #140a0a; }
+  .week-row.current .week-label { color: var(--red); }
+  .week-row-body { margin-top: 10px; display: none; }
+  .week-row.open .week-row-body { display: block; }
+  .week-adjustment { font-family: var(--mono); font-size: 11px; color: var(--blue); background: #0d1117; border: 1px solid #1e3a5f; padding: 8px 10px; border-radius: 4px; margin-bottom: 10px; line-height: 1.5; }
+
+  /* week stepper */
+  .week-nav { display: flex; align-items: center; justify-content: space-between; background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; }
+  .week-nav-btn { background: #1a1a1a; border: 1px solid var(--border); color: #fff; width: 44px; height: 44px; border-radius: 6px; cursor: pointer; font-size: 18px; font-family: var(--mono); }
+  .week-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .week-nav-label { font-family: var(--mono); font-size: 13px; color: #fff; text-align: center; flex: 1; }
+  .week-nav-label .sub { color: var(--text-dim); font-size: 11px; display: block; margin-top: 2px; }
+
+  /* progress / charts */
+  .chart { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .chart h3 { font-family: var(--mono); font-size: 12px; color: var(--blue); margin: 0 0 4px; text-transform: uppercase; letter-spacing: 2px; }
+  .chart .chart-sub { font-size: 11px; color: var(--text-dimmer); font-family: var(--mono); margin-bottom: 10px; }
+  .chart-empty { color: var(--text-dimmer); font-size: 13px; font-style: italic; padding: 28px 0; text-align: center; }
+  .chart svg { display: block; width: 100%; height: auto; }
+  .chart .axis-label { font-family: var(--mono); font-size: 10px; fill: var(--text-dimmer); }
+  .chart .grid { stroke: var(--border2); stroke-width: 1; }
+  .chart-foot { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-top: 10px; display: flex; justify-content: space-between; gap: 12px; }
+
+  /* stats grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  @media (min-width: 560px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+  .stat-box { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
+  .stat-box .stat-label { font-family: var(--mono); font-size: 9px; color: var(--text-dimmer); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .stat-box .stat-val { font-family: var(--mono); font-size: 22px; color: #fff; font-weight: 700; line-height: 1.1; }
+  .stat-box .stat-unit { font-size: 11px; color: var(--text-dim); }
+
+  /* reference view (carries original aesthetic) */
+  .panel { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .panel.science { background: #0d1117; border-color: #1e3a5f; }
+  .panel h3 { font-size: 15px; color: var(--blue); margin: 0 0 12px; font-family: var(--mono); }
+  .panel p { font-size: 12px; color: #888; margin: 0 0 12px; line-height: 1.6; }
+  .panel .italic-note { font-size: 11px; color: #666; font-style: italic; margin-top: 12px; }
+  table.zones { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.zones th { text-align: left; padding: 6px 8px; color: #888; font-weight: 500; font-size: 11px; font-family: var(--mono); border-bottom: 1px solid var(--border); }
+  table.zones td { padding: 8px; border-bottom: 1px solid #1a1a1a; font-size: 12px; }
   .table-wrap { overflow-x: auto; }
   .timing-rule { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a; }
-  .timing-rule:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .timing-rule:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
   .timing-rule-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
   .timing-rule-detail { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 4px; }
-  .timing-rule-source { font-size: 11px; color: #666; font-family: 'Courier New', monospace; }
-  .projection-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
-  .projection-month { width: 80px; font-size: 12px; color: #888; font-family: 'Courier New', monospace; flex-shrink: 0; }
-  .projection-bar-wrap { flex: 1; }
-  .projection-bar-bg { height: 20px; background: #1a1a1a; border-radius: 4px; overflow: hidden; position: relative; }
-  .projection-bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
-  .projection-bar-label { position: absolute; right: 8px; top: 2px; font-size: 11px; color: #fff; font-family: 'Courier New', monospace; font-weight: 700; }
-  .projection-weight { width: 60px; font-size: 12px; color: #999; font-family: 'Courier New', monospace; text-align: right; flex-shrink: 0; }
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid #333; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .tab { background: none; border: none; border-bottom: 2px solid transparent; color: #666; padding: 12px 14px; font-size: 13px; cursor: pointer; white-space: nowrap; font-family: 'Courier New', monospace; font-weight: 400; transition: all 0.2s; }
-  .tab.active { border-bottom-color: #ef4444; color: #fff; font-weight: 700; }
-  .phase-content { padding-top: 20px; padding-bottom: 40px; display: none; }
-  .phase-content.active { display: block; }
-  .phase-content h2 { font-size: 22px; color: #fff; margin: 0 0 4px; font-weight: 700; }
-  .phase-weeks { font-size: 13px; color: #ef4444; font-family: 'Courier New', monospace; margin-bottom: 4px; }
-  .phase-subtitle { font-size: 15px; color: #ccc; margin-bottom: 12px; }
-  .goal-box { background: #111; border-left: 3px solid #22c55e; padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 16px; }
-  .goal-label { font-size: 11px; color: #22c55e; font-family: 'Courier New', monospace; margin-bottom: 4px; letter-spacing: 1px; }
-  .goal-text { font-size: 14px; color: #e5e5e5; line-height: 1.6; }
-  .science-box { background: #0d1117; border: 1px solid #1e3a5f; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; }
-  .science-label { font-size: 11px; color: #60a5fa; font-family: 'Courier New', monospace; margin-bottom: 4px; letter-spacing: 1px; }
-  .science-text { font-size: 13px; color: #b0b0b0; line-height: 1.7; }
-  .section-h3 { font-size: 16px; color: #fff; margin: 0 0 12px; }
-  .day-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
-  .day-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
-  .day-label { font-size: 13px; font-weight: 700; color: #fff; font-family: 'Courier New', monospace; min-width: 32px; }
-  .day-type { font-size: 14px; font-weight: 600; }
-  .day-session { font-size: 14px; color: #fff; font-weight: 600; margin-bottom: 4px; margin-left: 42px; }
-  .day-details { font-size: 13px; color: #aaa; line-height: 1.6; margin-left: 42px; }
-  .day-timing { font-size: 11px; color: #666; margin-top: 6px; margin-left: 42px; font-family: 'Courier New', monospace; }
-  .progression-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
-  .progression-row { padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 13px; color: #ccc; line-height: 1.6; }
-  .progression-row:last-child { border-bottom: none; }
-  .progression-row.deload { color: #f59e0b; font-weight: 600; }
-  .rules-box { margin-top: 24px; background: #1a0a0a; border: 1px solid #4a1a1a; border-radius: 8px; padding: 16px; display: none; }
-  .rules-box.show { display: block; }
-  .rules-box h3 { font-size: 15px; color: #ef4444; margin: 0 0 12px; font-family: 'Courier New', monospace; }
-  .rules-box .rules-text { font-size: 13px; color: #ddd; line-height: 1.8; }
-  .rules-box .rules-text strong { color: #fff; }
-  .rules-box .rules-text > div { margin-bottom: 8px; }
-  .systems-box { background: #0d1117; border: 1px solid #1e3a5f; border-radius: 8px; padding: 16px; margin-bottom: 40px; }
-  .systems-box h3 { font-size: 15px; color: #60a5fa; margin: 0 0 16px; font-family: 'Courier New', monospace; }
+  .timing-rule-source { font-size: 11px; color: #666; font-family: var(--mono); }
+  .systems-box { background: #0d1117; border: 1px solid #1e3a5f; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  .systems-box h3 { font-size: 15px; color: var(--blue); margin: 0 0 16px; font-family: var(--mono); }
   .system-item { margin-bottom: 16px; }
   .system-item:last-child { margin-bottom: 0; }
   .system-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
   .system-text { font-size: 13px; color: #b0b0b0; line-height: 1.6; }
-  .italic-note { font-size: 11px; color: #666; margin-top: 12px; font-style: italic; }
+  .rules-box { background: #1a0a0a; border: 1px solid #4a1a1a; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .rules-box h3 { font-size: 15px; color: var(--red); margin: 0 0 12px; font-family: var(--mono); }
+  .rules-text { font-size: 13px; color: #ddd; line-height: 1.8; }
+  .rules-text strong { color: #fff; }
+  .rules-text > div { margin-bottom: 8px; }
+
+  /* modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 20px; overflow-y: auto; }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: #111; border: 1px solid var(--border); border-radius: 12px; padding: 22px; max-width: 480px; width: 100%; margin: 40px 0; }
+  .modal h2 { margin: 0 0 4px; font-size: 19px; color: #fff; }
+  .modal .modal-sub { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; font-family: var(--mono); }
+  .modal-footer { display: flex; gap: 8px; margin-top: 20px; }
+  .modal-footer button { flex: 1; min-height: 48px; border-radius: 6px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+  .btn-primary { background: var(--red); border: none; color: #fff; }
+  .btn-secondary { background: #1a1a1a; border: 1px solid var(--border); color: var(--text); }
+  .btn-danger { background: #1a0a0a; border: 1px solid #4a1a1a; color: var(--red); }
+  .btn { display: inline-block; padding: 12px 16px; border-radius: 6px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; cursor: pointer; border: 1px solid var(--border); background: #1a1a1a; color: var(--text); text-decoration: none; letter-spacing: 1px; }
+  .btn:hover { background: #222; }
+
+  /* utility */
+  .hidden { display: none !important; }
+  .hr { border: none; border-top: 1px solid var(--border3); margin: 16px 0; }
+  .muted { color: var(--text-dim); }
+  .small { font-size: 12px; }
+  .center { text-align: center; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="eyebrow">Research-Backed Protocol</div>
-    <h1>12-Month Airbike<br>Cardiovascular Overhaul</h1>
-    <p class="subtitle">From ~32 VO₂max → 50+ VO₂max · 40yo, 280lb, 6'0" male</p>
-    <p class="sources">Based on: Helgerud et al. 2007 · Seiler 2010 · Stöggl &amp; Sperlich 2014 · Bacon et al. 2013 · Wisløff et al. 2007</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div class="toggles">
-    <button class="toggle-btn" data-toggle="zones">HR Zones &amp; RPM</button>
-    <button class="toggle-btn" data-toggle="timing">Cardio + Lifting Timing</button>
-    <button class="toggle-btn" data-toggle="projections">VO₂max Projections</button>
-  </div>
-
-  <!-- Zones Panel -->
-  <div class="panel" id="zones-panel">
-    <h3>Your Heart Rate Zones (Age 40, HRmax ≈ 180)</h3>
-    <p>Using 220−age formula. Get a chest strap HR monitor — wrist monitors are unreliable at high intensity.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Zone</th><th>%HRmax</th><th>BPM</th><th>RPM*</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td class="zone-name" style="color:#999">Zone 1</td><td class="mono">50–60%</td><td class="mono" style="color:#fff">90–108</td><td class="mono">30–40</td><td>Warmup / cooldown / active recovery</td></tr>
-          <tr><td class="zone-name" style="color:#22c55e">Zone 2</td><td class="mono">60–70%</td><td class="mono" style="color:#fff">108–126</td><td class="mono">40–55</td><td>Aerobic base building (the bulk of your work)</td></tr>
-          <tr><td class="zone-name" style="color:#999">Zone 3</td><td class="mono">70–80%</td><td class="mono" style="color:#fff">126–144</td><td class="mono">55–62</td><td>Tempo / 'gray zone' — minimize time here</td></tr>
-          <tr><td class="zone-name" style="color:#f97316">Zone 4</td><td class="mono">80–90%</td><td class="mono" style="color:#fff">144–162</td><td class="mono">60–70</td><td>Lactate threshold / tempo intervals</td></tr>
-          <tr><td class="zone-name" style="color:#ef4444">Zone 5</td><td class="mono">90–95%+</td><td class="mono" style="color:#fff">162–171+</td><td class="mono">65–80+</td><td>VO₂max intervals (Norwegian 4×4)</td></tr>
-        </tbody>
-      </table>
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="app-title">
+      <div class="eyebrow">52-Week Protocol</div>
+      <h1>Airbike Cardiovascular Overhaul</h1>
+      <div class="wk mono" id="header-week">Week —</div>
     </div>
-    <p class="italic-note">*RPMs are approximate for a 280lb male on a standard Assault/Echo bike. At your weight, the bike provides MORE resistance than for a lighter person at the same RPM — your actual RPM targets may be 5–10 lower. Always defer to HR over RPM.</p>
+    <button class="settings-btn mono" id="settings-btn" aria-label="Settings">⚙</button>
   </div>
+</header>
 
-  <!-- Timing Panel -->
-  <div class="panel" id="timing-panel">
-    <h3>When to Bike vs. When to Lift</h3>
-    <div id="timing-rules"></div>
-  </div>
+<main class="container">
+  <div id="view-today" class="view active"></div>
+  <div id="view-week" class="view"></div>
+  <div id="view-plan" class="view"></div>
+  <div id="view-progress" class="view"></div>
+  <div id="view-reference" class="view"></div>
+</main>
 
-  <!-- Projections Panel -->
-  <div class="panel" id="projections-panel">
-    <h3>Projected VO₂max &amp; Weight Timeline</h3>
-    <p>Conservative estimates assuming consistent training + moderate caloric deficit. Weight loss alone improves relative VO₂max since it's measured per kg of body weight.</p>
-    <div id="projections-list"></div>
-    <p class="italic-note">Note: A 40-year-old male at 50+ VO₂max is in the top 5% for his age group. The combination of improved absolute oxygen uptake AND weight loss creates a multiplier effect on relative VO₂max. Bacon et al. (2013) meta-analysis confirms 15–20% VO₂max improvements are achievable with interval training. Greater gains (up to 96% in one PMC case study) are possible with high adherence and progressive volume to 300+ min/week.</p>
-  </div>
+<nav class="nav">
+  <button class="nav-btn active" data-view="today"><span class="ni">◈</span>Today</button>
+  <button class="nav-btn" data-view="week"><span class="ni">▤</span>Week</button>
+  <button class="nav-btn" data-view="plan"><span class="ni">☰</span>Plan</button>
+  <button class="nav-btn" data-view="progress"><span class="ni">◢</span>Progress</button>
+  <button class="nav-btn" data-view="reference"><span class="ni">◉</span>Reference</button>
+</nav>
 
-  <!-- Tabs -->
-  <div class="tabs" id="tabs"></div>
-
-  <!-- Phase content rendered into here -->
-  <div id="phase-container"></div>
-
-  <!-- Three Energy Systems -->
-  <div class="systems-box">
-    <h3>THE THREE SYSTEMS YOU'RE TRAINING</h3>
-    <div class="system-item">
-      <div class="system-title" style="color:#22c55e">1. Aerobic Base (Zone 2) — "The Engine"</div>
-      <div class="system-text">Builds mitochondrial density, capillary networks, cardiac stroke volume, and fat oxidation. This is 75–80% of your total training volume. Without this foundation, HIIT gains plateau within weeks. Research (Seiler, 2010) shows elite endurance athletes spend 80% of their time here — and you should too.</div>
-    </div>
-    <div class="system-item">
-      <div class="system-title" style="color:#ef4444">2. VO₂max (Norwegian 4×4) — "The Ceiling"</div>
-      <div class="system-text">The 4×4 protocol directly raises your maximum oxygen uptake by forcing the heart to pump at near-maximal stroke volume for sustained periods. Helgerud et al. (2007) showed 11% VO₂max improvement in 8 weeks. The Wen et al. (2018) meta-analysis confirmed that intervals longer than 2 minutes with total high-intensity volume exceeding 15 minutes per session are optimal for VO₂max development.</div>
-    </div>
-    <div class="system-item">
-      <div class="system-title" style="color:#f97316">3. Lactate Threshold — "The Sustainable Speed"</div>
-      <div class="system-text">Training at 80–88% HRmax in sustained blocks (5–8 min) improves your body's ability to clear lactate and sustain higher intensities before 'hitting the wall.' This determines how long you can work at a high percentage of your VO₂max. Over-under intervals (Phase 4) further train lactate buffering by oscillating above and below threshold.</div>
-    </div>
-  </div>
-</div>
+<div id="modal-root" class="modal-backdrop"></div>
 
 <script>
-const phases = [
+'use strict';
+
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
+const VERSION = 1;
+const STORAGE_KEY = 'airbike_v1';
+const MS_PER_DAY = 86400000;
+const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAY_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* ============================================================
+   PROGRESSION ENGINE — TUNABLE THRESHOLDS
+   These are the knobs you'll want to tweak to change adaptive behavior.
+   ============================================================ */
+const TUNING = {
+  MISSED_REPEAT_THRESHOLD: 3,   // ≥N missed sessions in prior week → suggest repeat
+  MISSED_FLATTEN_THRESHOLD: 1,  // >N missed → flatten progression (no bump)
+  HIGH_RPE_THRESHOLD: 9,        // avg RPE ≥N → flatten
+  Z2_RPM_HIT_PCT: 0.90,         // RPM must be ≥90% of target to count as "hit"
+  Z2_HR_MAX_PCT: 1.02,          // HR must be ≤ target*1.02 (small overshoot ok)
+  ON_TARGET_FRACTION: 0.75,     // ≥75% of Z2 sessions on target → bump
+  RPM_BUMP_Z2: 1,               // +1 RPM on Z2 ceiling when progressing
+  RPM_BUMP_THRESHOLD: 2         // +2 RPM on threshold/VO2max ceiling when progressing
+};
+
+/* ============================================================
+   CONTENT PRESERVED FROM ORIGINAL FILE
+   ============================================================ */
+const PHASES_INFO = [
   {
-    id: "phase1",
-    name: "Phase 1: Foundation",
-    weeks: "Weeks 1–6",
-    tabLabel: "W1–6",
-    subtitle: "Build the aerobic engine & learn the bike",
-    goal: "Establish base aerobic capacity, adapt joints/tendons, learn pacing by RPM and HR. Target: VO₂max ~33–36.",
-    science: "Sedentary individuals see initial 1–3% VO₂max gains in weeks 1–4 from plasma volume expansion and neural adaptations (ACSM, 2021). Zone 2 work builds mitochondrial density and capillary networks without excessive fatigue, creating the foundation all future intensity depends on.",
-    weeklySchedule: [
-      { day: "Mon", type: "Zone 2 Engine Builder", session: "20 min → 30 min (add 2 min/week)", details: "40–50 RPM, arms active but relaxed. HR 60–70% max (~108–126 bpm for age 40). Nasal breathing only — if you can't breathe through your nose, slow down.", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
-      { day: "Tue", type: "Strength Training", session: "Your normal lifting session", details: "No airbike today. Full recovery for Wednesday.", timing: "Any time", color: "#6b7280" },
-      { day: "Wed", type: "Zone 2 Engine Builder", session: "20 min → 30 min (add 2 min/week)", details: "Same protocol as Monday. Focus on smooth, rhythmic pedaling. Track average RPM and HR.", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
-      { day: "Thu", type: "Strength Training", session: "Your normal lifting session", details: "No airbike today.", timing: "Any time", color: "#6b7280" },
-      { day: "Fri", type: "Zone 2 Engine Builder", session: "25 min → 35 min (add 2 min/week)", details: "Slightly longer session. Same intensity. This is your weekly 'long ride.'", timing: "Morning or 6+ hrs separated from lifting", color: "#22c55e" },
-      { day: "Sat", type: "Intro Intervals (Week 3+)", session: "Wk 1–2: OFF. Wk 3+: 6×30s ON / 90s OFF", details: "Week 3 onward: 5 min warmup → 6 rounds of 30s at 65–70 RPM (RPE 7) / 90s at 35 RPM recovery → 5 min cooldown. Total: ~22 min.", timing: "Morning, NOT same day as lifting", color: "#f59e0b" },
-      { day: "Sun", type: "OFF", session: "Full rest or walk", details: "Recovery is where adaptation happens. Sleep 7–9 hrs.", timing: "—", color: "#ef4444" }
-    ],
-    progression: [
-      "Wk 1: 3 sessions (3×20 min Z2). Total: 60 min/week",
-      "Wk 2: 3 sessions (3×22 min Z2). Total: 66 min/week",
-      "Wk 3: 4 sessions (3×24 min Z2 + intro intervals). Total: ~94 min/week",
-      "Wk 4: 4 sessions (3×26 min Z2 + intervals). Total: ~100 min/week",
-      "Wk 5: 4 sessions (3×28 min Z2 + intervals 8×30s). Total: ~108 min/week",
-      "Wk 6: DELOAD — reduce all volume by 40%. Test: 10-min max cal time trial for baseline."
-    ],
-    showRules: true
+    id: 'phase1',
+    name: 'Phase 1: Foundation',
+    weekRange: [1, 6],
+    subtitle: 'Build the aerobic engine & learn the bike',
+    goal: 'Establish base aerobic capacity, adapt joints/tendons, learn pacing by RPM and HR. Target: VO₂max ~33–36.',
+    science: 'Sedentary individuals see initial 1–3% VO₂max gains in weeks 1–4 from plasma volume expansion and neural adaptations (ACSM, 2021). Zone 2 work builds mitochondrial density and capillary networks without excessive fatigue, creating the foundation all future intensity depends on.'
   },
   {
-    id: "phase2",
-    name: "Phase 2: Aerobic Development",
-    weeks: "Weeks 7–14",
-    tabLabel: "W7–14",
-    subtitle: "Introduce the Norwegian 4×4 protocol",
-    goal: "Drive VO₂max with research-proven 4×4 intervals while continuing to deepen the aerobic base. Target: VO₂max ~37–41.",
-    science: "Helgerud et al. (2007) demonstrated 4×4 min intervals at 90–95% HRmax improved VO₂max by ~11% in 8 weeks — significantly more than moderate continuous training or shorter intervals. The 4-min duration is critical: it's long enough to drive the heart to near-maximal stroke volume, which is the primary mechanism of VO₂max improvement (Astorino et al., 2017).",
-    weeklySchedule: [
-      { day: "Mon", type: "Zone 2 Engine Builder", session: "30–40 min", details: "45–52 RPM, HR 60–70% max. Continue nasal breathing discipline. Add 2 min every 2 weeks.", timing: "Morning, or POST-lifting (after 10 min cooldown)", color: "#22c55e" },
-      { day: "Tue", type: "Norwegian 4×4 VO₂max", session: "~35 min total", details: "10 min warmup (build from 40→55 RPM) → 4×4 min at 60–70 RPM targeting 90–95% HRmax (~162–171 bpm) / 3 min active recovery at 35–40 RPM → 5 min cooldown. YOU MUST HIT 90% HRmax BY MIN 2 of each interval or you're going too easy.", timing: "Standalone session — no lifting same day if possible. If must combine, do AFTER lifting with 10 min rest.", color: "#ef4444" },
-      { day: "Wed", type: "Strength Training + Z2", session: "Lift + 20 min Z2 post-lift", details: "Lift first. Then 20 min easy airbike at 40–48 RPM as extended cooldown. HR stays under 65% max.", timing: "Z2 immediately after lifting is fine at this low intensity", color: "#22c55e" },
-      { day: "Thu", type: "Zone 2 Engine Builder", session: "35–45 min", details: "Your mid-week long Z2 session. 45–52 RPM. Conversational pace.", timing: "Separated from lifting", color: "#22c55e" },
-      { day: "Fri", type: "Strength Training", session: "Your normal lifting session", details: "No airbike. Recover for Saturday.", timing: "Any time", color: "#6b7280" },
-      { day: "Sat", type: "Threshold Intervals", session: "~30 min total", details: "8 min warmup → 3×5 min at 55–62 RPM (HR 80–88% max, RPE 7–8, 'can speak 3–4 words') / 3 min recovery at 38 RPM → 5 min cooldown. This targets lactate threshold specifically.", timing: "Standalone session", color: "#f97316" },
-      { day: "Sun", type: "OFF or Active Recovery", session: "OFF or 15 min at 35 RPM", details: "If you feel good: 15 min very easy spin, HR under 60% max. Otherwise full rest.", timing: "—", color: "#ef4444" }
-    ],
-    progression: [
-      "Wk 7: 5 sessions. ~140 min total. First Norwegian 4×4.",
-      "Wk 8: Same structure, aim to hold higher RPM in 4×4 intervals",
-      "Wk 9: Add 1 rep to threshold day (4×5 min). Z2 sessions +2 min",
-      "Wk 10: 4×4 target: sustain 65+ RPM all 4 intervals",
-      "Wk 11: Z2 sessions hit 40 min. Threshold: 4×6 min",
-      "Wk 12: DELOAD — cut volume 40%. Retest 10-min time trial.",
-      "Wk 13–14: Resume with Week 9 structure + 5% higher RPM targets"
-    ]
+    id: 'phase2',
+    name: 'Phase 2: Aerobic Development',
+    weekRange: [7, 14],
+    subtitle: 'Introduce the Norwegian 4×4 protocol',
+    goal: 'Drive VO₂max with research-proven 4×4 intervals while continuing to deepen the aerobic base. Target: VO₂max ~37–41.',
+    science: 'Helgerud et al. (2007) demonstrated 4×4 min intervals at 90–95% HRmax improved VO₂max by ~11% in 8 weeks — significantly more than moderate continuous training or shorter intervals. The 4-min duration is critical: long enough to drive the heart to near-maximal stroke volume, which is the primary mechanism of VO₂max improvement (Astorino et al., 2017).'
   },
   {
-    id: "phase3",
-    name: "Phase 3: Polarized Intensification",
-    weeks: "Weeks 15–28",
-    tabLabel: "W15–28",
-    subtitle: "80/20 polarized model with double 4×4 sessions",
-    goal: "Maximize VO₂max gains through proven polarized distribution: 80% easy / 20% hard. Target: VO₂max ~42–47.",
-    science: "The polarized training model (Seiler, 2010; Stöggl & Sperlich, 2014) distributes ~80% of volume at low intensity (Zone 2) and ~20% at high intensity. Stöggl & Sperlich found polarized training produced superior VO₂max and peak performance improvements compared to threshold-only or high-volume-only approaches. The meta-analysis by Bacon et al. (2013) in PLOS ONE confirmed that interval studies using 3–5 min intervals produced the largest VO₂max gains.",
-    weeklySchedule: [
-      { day: "Mon", type: "Zone 2 Engine Builder", session: "40–50 min", details: "48–55 RPM. As fitness grows, you'll hold higher RPM at the same HR. This is the proof it's working.", timing: "AM session or separated from PM lift by 6+ hrs", color: "#22c55e" },
-      { day: "Tue", type: "Norwegian 4×4 #1", session: "~38 min total", details: "10 min warmup → 4×4 min at 65–75 RPM (90–95% HRmax) / 3 min recovery → 5 min cooldown. Push RPM up as fitness allows — the bike gets harder exponentially.", timing: "Standalone AM session ideal. If combining with lift, do AFTER lifting.", color: "#ef4444" },
-      { day: "Wed", type: "Strength + Z2 Cooldown", session: "Lift + 25 min Z2", details: "Lift first. Then 25 min easy at 42–50 RPM. This does NOT count toward your 'hard' 20%.", timing: "Z2 immediately post-lift is fine", color: "#22c55e" },
-      { day: "Thu", type: "Zone 2 Long Session", session: "45–60 min", details: "This is your weekly long Z2. Build to 60 min by week 20. 48–55 RPM, conversational.", timing: "Separated from lifting", color: "#22c55e" },
-      { day: "Fri", type: "Norwegian 4×4 #2 + Strength", session: "4×4 intervals → Lift after", details: "Reverse order on this day: Do 4×4 intervals FIRST when fresh (cardiovascular priority), then lift. Or split AM bike / PM lift.", timing: "Bike AM, Lift PM ideal. Or bike first same session.", color: "#ef4444" },
-      { day: "Sat", type: "Threshold / Lactate Clearance", session: "~35 min total", details: "8 min warmup → 3–4×6 min at 57–65 RPM (HR 82–88% max) / 3 min recovery → 5 min cooldown. By week 20, progress to 4×8 min blocks.", timing: "Standalone session", color: "#f97316" },
-      { day: "Sun", type: "OFF or Easy Z1 Spin", session: "OFF or 20 min at 35 RPM", details: "Full rest preferred. Light spin only if recovery is solid.", timing: "—", color: "#ef4444" }
-    ],
-    progression: [
-      "Wk 15–16: 6 sessions, ~200 min/week. Two 4×4 sessions.",
-      "Wk 17–18: Z2 sessions reach 45–50 min. Threshold: 4×6 min.",
-      "Wk 19–20: Threshold progresses to 3×8 min. Z2 long hits 55 min.",
-      "Wk 21: DELOAD. Retest 10-min time trial + estimate VO₂max.",
-      "Wk 22–24: Resume. Push 4×4 RPM targets up 5%. Threshold: 4×8 min.",
-      "Wk 25–26: Z2 long hits 60 min. Total weekly volume ~230 min.",
-      "Wk 27–28: DELOAD. Full retest. Recalculate HR zones if weight has changed."
-    ]
+    id: 'phase3',
+    name: 'Phase 3: Polarized Intensification',
+    weekRange: [15, 28],
+    subtitle: '80/20 polarized model with double 4×4 sessions',
+    goal: 'Maximize VO₂max gains through proven polarized distribution: 80% easy / 20% hard. Target: VO₂max ~42–47.',
+    science: 'The polarized training model (Seiler, 2010; Stöggl & Sperlich, 2014) distributes ~80% of volume at low intensity (Zone 2) and ~20% at high intensity. Stöggl & Sperlich found polarized training produced superior VO₂max and peak performance improvements vs. threshold-only or high-volume-only approaches. The Bacon et al. (2013) meta-analysis in PLOS ONE confirmed that 3–5 min intervals produce the largest VO₂max gains.'
   },
   {
-    id: "phase4",
-    name: "Phase 4: Peak Performance",
-    weeks: "Weeks 29–52",
-    tabLabel: "W29–52",
-    subtitle: "Advanced periodization & maintenance of elite fitness",
-    goal: "Continued VO₂max development with 4-week mesocycles (3 hard + 1 deload). Push toward genetic ceiling. Target: VO₂max ~47–55.",
-    science: "After 6 months, VO₂max gains slow as you approach your genetic ceiling (Bouchard et al., 2011 — genetics accounts for ~50% of VO₂max variability). However, a case study in PMC showed a 96% VO₂max improvement over 24 months in a previously sedentary individual who progressively increased training volume to 300 min/week. Weight loss also contributes: since VO₂max is measured in mL/kg/min, every pound lost while maintaining absolute oxygen uptake raises your relative VO₂max.",
-    weeklySchedule: [
-      { day: "Mon", type: "Zone 2 Engine Builder", session: "45–60 min", details: "50–58 RPM at same HR as before. Higher RPM at same HR = improved fitness. Track this metric monthly.", timing: "AM or separated from lifting", color: "#22c55e" },
-      { day: "Tue", type: "Norwegian 4×4 VO₂max", session: "~38 min", details: "4×4 min at 70–80+ RPM (90–95% HRmax). By now your work capacity is dramatically higher. 3 min recovery.", timing: "Standalone or pre-lift", color: "#ef4444" },
-      { day: "Wed", type: "Strength + Z2", session: "Lift + 25–30 min Z2", details: "Lift first. Easy Z2 cooldown.", timing: "Same session fine", color: "#22c55e" },
-      { day: "Thu", type: "Threshold / Over-Unders", session: "~40 min total", details: "NEW: Over-Under intervals. 8 min warmup → 4×8 min alternating 2 min at 88% HRmax / 1 min at 75% HRmax within each block / 3 min easy between blocks → cooldown. Trains lactate buffering.", timing: "Standalone", color: "#f97316" },
-      { day: "Fri", type: "Norwegian 4×4 #2 + Strength", session: "4×4 intervals → Lift", details: "Second weekly 4×4. Then lift.", timing: "Bike AM / Lift PM or bike-first same session", color: "#ef4444" },
-      { day: "Sat", type: "Z2 Long + Sprint Finisher", session: "50–60 min Z2 + 4×20s sprints", details: "Long Z2 ride, then finish with 4×20s all-out sprints (90+ RPM) / 2 min full recovery between sprints. Develops anaerobic power on top of aerobic base.", timing: "Standalone", color: "#22c55e" },
-      { day: "Sun", type: "OFF", session: "Full rest", details: "Non-negotiable by this phase. You're training 6 days/week at serious volume.", timing: "—", color: "#ef4444" }
-    ],
-    progression: [
-      "Wk 29–31: Build. ~250 min/week. 4×4 RPMs continue climbing.",
-      "Wk 32: DELOAD. Test 10-min time trial. Compare to all prior tests.",
-      "Wk 33–35: Build. Add Over-Under intervals. Total ~260 min/week.",
-      "Wk 36: DELOAD. Every 4th week, always.",
-      "Wk 37–48: Repeat 3+1 mesocycles. Vary interval structures monthly.",
-      "Wk 49–51: Peak block. Highest volume & intensity of the year.",
-      "Wk 52: Final DELOAD + comprehensive retest. Celebrate your transformation."
-    ]
+    id: 'phase4',
+    name: 'Phase 4: Peak Performance',
+    weekRange: [29, 52],
+    subtitle: 'Advanced periodization & maintenance of elite fitness',
+    goal: 'Continued VO₂max development with 4-week mesocycles (3 hard + 1 deload). Push toward genetic ceiling. Target: VO₂max ~47–55.',
+    science: 'Advanced periodization using 3+1 mesocycles allows progressive overload while managing cumulative fatigue. Over-under intervals train lactate buffering — a key determinant of sustainable high-intensity output. Peak fitness is maintained via varied interval structures and a final high-volume peak block.'
   }
 ];
 
-const timingRules = [
-  { title: "Lift FIRST, Easy Cardio After", detail: "When combining in one session, always lift before Zone 2 cardio. The AMPK pathway activated by cardio inhibits the mTOR pathway needed for muscle growth. This interference effect is minimized when strength comes first (Concurrent Training meta-analyses, Wilson et al. 2012; updated Schumann et al. 2022).", source: "Hickson 1980; Wilson et al. 2012; ScienceDirect 2025" },
-  { title: "6+ Hour Gap for Hard Cardio", detail: "AMPK signaling remains elevated for ~3–4 hours post-cardio. If doing HIIT (4×4s, threshold work), separate from lifting by 6+ hours minimum. AM/PM splits are ideal. If forced to combine: do the modality that matters MORE to you first.", source: "Gymshark/Saunders; Barbell Medicine; PMC concurrent training reviews" },
-  { title: "Never HIIT Before a Hard Leg Day", detail: "Residual fatigue from high-intensity airbike work compromises squat/deadlift quality. Schedule your 4×4 sessions on upper body lifting days or standalone days.", source: "Stronger by Science; PMC meta-analysis on interference effect" },
-  { title: "Low Intensity = Low Interference", detail: "Zone 2 work at true conversational pace produces minimal interference with strength gains. It can safely follow any lifting session as an extended cooldown. This is well-supported even in the most conservative concurrent training research.", source: "Stronger by Science 2024 meta-analysis update" }
+const TIMING_RULES = [
+  { title: 'Lift FIRST, Easy Cardio After', detail: 'When combining in one session, always lift before Zone 2 cardio. The AMPK pathway activated by cardio inhibits the mTOR pathway needed for muscle growth. This interference effect is minimized when strength comes first.', source: 'Hickson 1980; Wilson et al. 2012; Schumann et al. 2022' },
+  { title: '6+ Hour Gap for Hard Cardio', detail: 'AMPK signaling remains elevated for ~3–4 hours post-cardio. If doing HIIT (4×4s, threshold work), separate from lifting by 6+ hours minimum. AM/PM splits are ideal. If forced to combine, do the modality that matters more to you FIRST.', source: 'Barbell Medicine; PMC concurrent training reviews' },
+  { title: 'Never HIIT Before a Hard Leg Day', detail: 'Residual fatigue from high-intensity airbike work compromises squat/deadlift quality. Schedule your 4×4 sessions on upper-body lifting days or standalone days.', source: 'Stronger by Science; PMC meta-analysis on interference effect' },
+  { title: 'Low Intensity = Low Interference', detail: 'Zone 2 work at true conversational pace produces minimal interference with strength gains. It can safely follow any lifting session as an extended cooldown. This is well-supported even in the most conservative concurrent-training research.', source: 'Stronger by Science 2024 meta-analysis update' }
 ];
 
-const projections = [
-  { month: "Start", vo2: 32, weight: 280, event: "Baseline test" },
-  { month: "Month 2", vo2: 35, weight: 272, event: "End Phase 1" },
-  { month: "Month 4", vo2: 39, weight: 262, event: "End Phase 2" },
-  { month: "Month 7", vo2: 44, weight: 250, event: "Mid Phase 3" },
-  { month: "Month 9", vo2: 47, weight: 242, event: "End Phase 3" },
-  { month: "Month 12", vo2: 52, weight: 232, event: "End Phase 4" }
+const ENERGY_SYSTEMS = [
+  { title: '1. Aerobic Base (Zone 2) — "The Engine"', color: '#22c55e', text: 'Builds mitochondrial density, capillary networks, cardiac stroke volume, and fat oxidation. This is 75–80% of your total training volume. Without this foundation, HIIT gains plateau within weeks. Seiler (2010) shows elite endurance athletes spend ~80% of their time here.' },
+  { title: '2. VO₂max (Norwegian 4×4) — "The Ceiling"', color: '#ef4444', text: 'The 4×4 protocol directly raises your maximum oxygen uptake by forcing the heart to pump at near-maximal stroke volume for sustained periods. Helgerud et al. (2007) showed 11% VO₂max improvement in 8 weeks. Wen et al. (2018) meta-analysis confirmed >15 min weekly high-intensity volume is optimal.' },
+  { title: '3. Lactate Threshold — "The Sustainable Speed"', color: '#f97316', text: 'Training at 80–88% HRmax in sustained blocks (5–8 min) improves lactate clearance and your ability to sustain higher intensities before "hitting the wall." Over-under intervals (Phase 4) further train lactate buffering by oscillating above and below threshold.' }
 ];
 
-function escapeHtml(s){return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const NON_NEG_RULES = [
+  { n: 1, title: 'Buy a chest strap HR monitor.', text: 'Wrist-based is unreliable above 150 bpm. The entire program is built on HR zones. Polar H10 or Garmin HRM-Pro recommended.' },
+  { n: 2, title: 'HR governs intensity, NOT RPM.', text: 'RPMs are guidelines. If your HR is too high at the listed RPM, slow down. If too low, speed up. Your weight means the bike provides significantly more resistance — your RPMs will be lower than a 180lb person.' },
+  { n: 3, title: 'Zone 2 must be truly easy.', text: 'You should be able to hold a full conversation. If you can\'t, you\'re going too hard. Ego is the #1 killer of Zone 2 training.' },
+  { n: 4, title: 'Deload weeks are mandatory.', text: 'Every 4–6 weeks, cut volume by 40%. This is where your body actually adapts. Skipping deloads leads to overtraining and stalled progress.' },
+  { n: 5, title: 'Track everything.', text: 'Log session type, duration, avg RPM, avg HR, peak HR, RPE. Monthly: 10-min max calorie time trial. This data IS your proof of progress.' }
+];
 
-// Render timing rules
-document.getElementById('timing-rules').innerHTML = timingRules.map(r => `
-  <div class="timing-rule">
-    <div class="timing-rule-title">${escapeHtml(r.title)}</div>
-    <div class="timing-rule-detail">${escapeHtml(r.detail)}</div>
-    <div class="timing-rule-source">Sources: ${escapeHtml(r.source)}</div>
-  </div>
-`).join('');
-
-// Render projections
-document.getElementById('projections-list').innerHTML = projections.map(p => {
-  const pct = ((p.vo2 - 25) / 35) * 100;
-  const grad = p.vo2 >= 50 ? 'linear-gradient(90deg, #22c55e, #16a34a)' : p.vo2 >= 40 ? 'linear-gradient(90deg, #f59e0b, #22c55e)' : 'linear-gradient(90deg, #ef4444, #f59e0b)';
-  return `
-    <div class="projection-row">
-      <div class="projection-month">${escapeHtml(p.month)}</div>
-      <div class="projection-bar-wrap">
-        <div class="projection-bar-bg">
-          <div class="projection-bar" style="width:${pct}%; background:${grad};"></div>
-          <span class="projection-bar-label">${p.vo2} mL/kg/min</span>
-        </div>
-      </div>
-      <div class="projection-weight">${p.weight}lb</div>
-    </div>`;
-}).join('');
-
-// Render tabs
-const tabsEl = document.getElementById('tabs');
-tabsEl.innerHTML = phases.map((p, i) => `<button class="tab${i===0?' active':''}" data-phase="${p.id}">${escapeHtml(p.tabLabel)}</button>`).join('');
-
-// Render phase content
-function renderPhase(phase) {
-  const days = phase.weeklySchedule.map(d => `
-    <div class="day-card" style="border-left:3px solid ${d.color}">
-      <div class="day-header">
-        <span class="day-label">${escapeHtml(d.day)}</span>
-        <span class="day-type" style="color:${d.color}">${escapeHtml(d.type)}</span>
-      </div>
-      <div class="day-session">${escapeHtml(d.session)}</div>
-      <div class="day-details">${escapeHtml(d.details)}</div>
-      <div class="day-timing">Timing: ${escapeHtml(d.timing)}</div>
-    </div>
-  `).join('');
-
-  const progression = phase.progression.map(p => `<div class="progression-row${p.includes('DELOAD')?' deload':''}">${escapeHtml(p)}</div>`).join('');
-
-  const rules = phase.showRules ? `
-    <div class="rules-box show">
-      <h3>NON-NEGOTIABLE RULES</h3>
-      <div class="rules-text">
-        <div><strong>1. Buy a chest strap HR monitor.</strong> Wrist-based is unreliable above 150 bpm. The entire program is built on HR zones. Polar H10 or Garmin HRM-Pro recommended.</div>
-        <div><strong>2. HR governs intensity, NOT RPM.</strong> RPMs are guidelines. If your HR is too high at the listed RPM, slow down. If too low, speed up. Your weight means the bike provides significantly more resistance — your RPMs will be lower than a 180lb person.</div>
-        <div><strong>3. Zone 2 must be truly easy.</strong> You should be able to hold a full conversation. If you can't, you're too hard. Ego is the #1 killer of Zone 2 training.</div>
-        <div><strong>4. Deload weeks are mandatory.</strong> Every 4–6 weeks, cut volume by 40%. This is where your body actually adapts. Skipping deloads leads to overtraining and stalled progress.</div>
-        <div><strong>5. Track everything.</strong> Log: date, session type, duration, avg RPM, avg HR, peak HR, RPE (1–10). Monthly: 10-min max calorie time trial. This data IS your proof of progress.</div>
-      </div>
-    </div>` : '';
-
-  return `
-    <div class="phase-content active" id="content-${phase.id}">
-      <h2>${escapeHtml(phase.name)}</h2>
-      <div class="phase-weeks">${escapeHtml(phase.weeks)}</div>
-      <div class="phase-subtitle">${escapeHtml(phase.subtitle)}</div>
-      <div class="goal-box">
-        <div class="goal-label">GOAL</div>
-        <div class="goal-text">${escapeHtml(phase.goal)}</div>
-      </div>
-      <div class="science-box">
-        <div class="science-label">THE RESEARCH</div>
-        <div class="science-text">${escapeHtml(phase.science)}</div>
-      </div>
-      <h3 class="section-h3">Weekly Schedule</h3>
-      <div>${days}</div>
-      <h3 class="section-h3" style="margin-top:24px">Week-by-Week Progression</h3>
-      <div class="progression-box">${progression}</div>
-      ${rules}
-    </div>
-  `;
+/* ============================================================
+   STATE LAYER (localStorage)
+   ============================================================ */
+function defaultState() {
+  return {
+    version: VERSION,
+    settings: {
+      startDate: nextMondayISO(),
+      hrMax: 180,
+      bodyweightLb: 280,
+      units: 'lb',
+      vo2maxManual: null
+    },
+    logs: {},          // dateKey → { completed, durationMin, avgRpm, avgHr, peakHr, rpe, notes, ts, weekIndex, dayIndex }
+    bodyweightLog: {}, // dateKey → number in settings.units
+    timeTrials: {}     // weekIndex (string) → { dateKey, cals, finalHr, vo2max, source, bodyweight }
+  };
 }
 
-const phaseContainer = document.getElementById('phase-container');
-function showPhase(id) {
-  const phase = phases.find(p => p.id === id);
-  phaseContainer.innerHTML = renderPhase(phase);
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.phase === id));
-  window.scrollTo({ top: tabsEl.offsetTop - 10, behavior: 'smooth' });
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return migrate(parsed);
+  } catch (e) {
+    console.error('Failed to load state, using defaults', e);
+    return defaultState();
+  }
 }
 
-tabsEl.addEventListener('click', e => {
-  if (e.target.dataset.phase) showPhase(e.target.dataset.phase);
-});
+function saveState(s) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch (e) {
+    alert('Failed to save to localStorage: ' + e.message);
+  }
+}
 
-// Initial render
-showPhase('phase1');
+function migrate(s) {
+  // Future migrations live here. Always returns a v1-shaped object.
+  if (!s.version) s.version = VERSION;
+  const base = defaultState();
+  s.settings = Object.assign({}, base.settings, s.settings || {});
+  s.logs = s.logs || {};
+  s.bodyweightLog = s.bodyweightLog || {};
+  s.timeTrials = s.timeTrials || {};
+  return s;
+}
 
-// Toggle panels
-document.querySelectorAll('.toggle-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.toggle + '-panel';
-    const panel = document.getElementById(id);
-    const isOpen = panel.classList.toggle('open');
-    btn.classList.toggle('active', isOpen);
+/* ============================================================
+   DATE HELPERS
+   ============================================================ */
+function isoDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
+function parseISO(s) { return new Date(s + 'T00:00:00'); }
+function todayDate() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function nextMondayISO() {
+  const d = todayDate();
+  const dow = d.getDay(); // 0=Sun..6=Sat
+  const delta = dow === 1 ? 0 : ((8 - dow) % 7 || 7); // if today is Mon, use today
+  d.setDate(d.getDate() + delta);
+  return isoDate(d);
+}
+function currentWeekIndex(settings) {
+  const start = parseISO(settings.startDate);
+  const now = todayDate();
+  const days = Math.floor((now - start) / MS_PER_DAY);
+  if (days < 0) return 0;
+  return Math.min(53, Math.floor(days / 7) + 1);
+}
+function currentDayIndex(settings) {
+  const start = parseISO(settings.startDate);
+  const now = todayDate();
+  const days = Math.floor((now - start) / MS_PER_DAY);
+  if (days < 0) return -1;
+  return days % 7;
+}
+function dateForWeekDay(weekIndex, dayIndex, startDateISO) {
+  const d = parseISO(startDateISO);
+  d.setDate(d.getDate() + (weekIndex - 1) * 7 + dayIndex);
+  return d;
+}
+function formatDate(d) {
+  return DAY_FULL[(d.getDay() + 6) % 7] + ', ' + MONTH_SHORT[d.getMonth()] + ' ' + d.getDate();
+}
+function formatDateShort(d) {
+  return MONTH_SHORT[d.getMonth()] + ' ' + d.getDate();
+}
+function weekRangeLabel(weekIndex, startDateISO) {
+  const a = dateForWeekDay(weekIndex, 0, startDateISO);
+  const b = dateForWeekDay(weekIndex, 6, startDateISO);
+  return formatDateShort(a) + ' – ' + formatDateShort(b);
+}
+
+/* ============================================================
+   HR ZONES
+   ============================================================ */
+function hrZones(hrMax) {
+  const R = (p) => Math.round(p * hrMax);
+  return [
+    { name: 'Zone 1', pct: '50–60%',  bpm: R(0.50) + '–' + R(0.60),     rpm: '30–40', purpose: 'Warmup / cooldown / active recovery', color: '#999' },
+    { name: 'Zone 2', pct: '60–70%',  bpm: R(0.60) + '–' + R(0.70),     rpm: '40–55', purpose: 'Aerobic base building (the bulk of your work)', color: '#22c55e' },
+    { name: 'Zone 3', pct: '70–80%',  bpm: R(0.70) + '–' + R(0.80),     rpm: '55–62', purpose: 'Tempo / "gray zone" — minimize time here', color: '#999' },
+    { name: 'Zone 4', pct: '80–90%',  bpm: R(0.80) + '–' + R(0.90),     rpm: '60–70', purpose: 'Lactate threshold / tempo intervals', color: '#f97316' },
+    { name: 'Zone 5', pct: '90–95%+', bpm: R(0.90) + '–' + R(0.95) + '+', rpm: '65–80+', purpose: 'VO₂max intervals (Norwegian 4×4)', color: '#ef4444' }
+  ];
+}
+
+/* ============================================================
+   VO₂MAX ESTIMATE (10-minute airbike time trial)
+   Rationale:
+     1 kcal = 4.184 kJ
+     1 L O₂ ≈ 20.1 kJ (at RER ≈ 0.96)
+     VO₂ (L/min) = (cals × 4.184) / 20.1 / 10 min
+     VO₂ (ml/kg/min) = × 1000 / bodyweight_kg
+     A 10-min max effort averages ~85% of VO₂max, so peak ≈ avg / 0.85
+   Simplifies to: VO₂max ≈ cals × 24.5 / bodyweight_kg
+   Accuracy: ±15%. Always prefer a measured VO₂max if you have one.
+   ============================================================ */
+function estimateVo2Max(cals, bodyweightLb) {
+  const kg = bodyweightLb * 0.4536;
+  return Math.round((cals * 24.5 / kg) * 10) / 10;
+}
+function vo2maxFormulaText() {
+  return 'VO₂max ≈ (cals × 24.5) / bodyweight_kg. Derived from cal→kJ→L O₂ conversion, assuming a 10-min max effort averages ~85% of VO₂max. Accuracy ±15%.';
+}
+
+/* ============================================================
+   WEEK INFO (phase, deload, time trial detection)
+   ============================================================ */
+function weekInfo(weekIndex) {
+  if (weekIndex < 1 || weekIndex > 52) return null;
+  if (weekIndex <= 6) {
+    return { phaseId: 'phase1', phaseName: 'Phase 1: Foundation', weekInPhase: weekIndex, isDeload: weekIndex === 6, isTimeTrial: weekIndex === 6 };
+  }
+  if (weekIndex <= 14) {
+    return { phaseId: 'phase2', phaseName: 'Phase 2: Aerobic Development', weekInPhase: weekIndex - 6, isDeload: weekIndex === 12, isTimeTrial: weekIndex === 12 };
+  }
+  if (weekIndex <= 28) {
+    const isDeload = weekIndex === 21 || weekIndex === 27 || weekIndex === 28;
+    const isTT = weekIndex === 21 || weekIndex === 27;
+    return { phaseId: 'phase3', phaseName: 'Phase 3: Polarized Intensification', weekInPhase: weekIndex - 14, isDeload, isTimeTrial: isTT };
+  }
+  // Phase 4: W29–52, 4-week mesocycles, peak block W49–51
+  const deloadWeeks = [32, 36, 40, 44, 48, 52];
+  const ttWeeks = [32, 52];
+  const isDeload = deloadWeeks.includes(weekIndex);
+  const isPeak = weekIndex >= 49 && weekIndex <= 51;
+  return {
+    phaseId: 'phase4',
+    phaseName: 'Phase 4: Peak Performance',
+    weekInPhase: weekIndex - 28,
+    mesocycleWeek: isPeak ? (weekIndex - 48) : (((weekIndex - 29) % 4) + 1),
+    isDeload,
+    isTimeTrial: ttWeeks.includes(weekIndex),
+    isPeak
+  };
+}
+
+/* ============================================================
+   WEEK BUILDER — generates concrete per-day workouts
+   Each day object:
+     { dayName, dayIndex, type, title, color, durationMin, sessionLabel,
+       targetRpm, targetHr, intervals, details, timing }
+   The `bump` param carries cumulative adaptive adjustments from prior weeks.
+   ============================================================ */
+function buildWeek(weekIndex, settings, bump) {
+  const info = weekInfo(weekIndex);
+  if (!info) return null;
+  bump = bump || { z2: 0, threshold: 0 };
+
+  let days;
+  if (info.phaseId === 'phase1') days = buildPhase1(info, bump);
+  else if (info.phaseId === 'phase2') days = buildPhase2(info, bump);
+  else if (info.phaseId === 'phase3') days = buildPhase3(info, bump);
+  else days = buildPhase4(info, bump);
+
+  // Overlay 10-min time trial on Saturday of TT weeks
+  if (info.isTimeTrial) days[5] = makeTimeTrialDay();
+
+  // Attach metadata
+  return Object.assign({ weekIndex, days }, info);
+}
+
+function makeZ2Day(dayName, dayIndex, duration, rpm, title, details, timing) {
+  return {
+    dayName, dayIndex,
+    type: title.toLowerCase().includes('long') ? 'z2-long' : 'z2-short',
+    title, color: '#22c55e',
+    durationMin: duration,
+    sessionLabel: duration + ' min Zone 2',
+    targetRpm: rpm,
+    targetHr: { pctMin: 0.60, pctMax: 0.70 },
+    intervals: null,
+    details, timing
+  };
+}
+function makeStrengthDay(dayName, dayIndex) {
+  return {
+    dayName, dayIndex, type: 'strength',
+    title: 'Strength Training', color: '#6b7280',
+    durationMin: 0, sessionLabel: 'Your normal lifting session',
+    targetRpm: null, targetHr: null, intervals: null,
+    details: 'No airbike today. Full recovery.', timing: 'Any time'
+  };
+}
+function makeOffDay(dayName) {
+  return {
+    dayName, dayIndex: DAY_NAMES.indexOf(dayName),
+    type: 'off', title: 'OFF', color: '#ef4444',
+    durationMin: 0, sessionLabel: 'Full rest',
+    targetRpm: null, targetHr: null, intervals: null,
+    details: 'Recovery is where adaptation happens. Sleep 7–9 hrs. Walk if you feel antsy.',
+    timing: '—'
+  };
+}
+function makeTimeTrialDay() {
+  return {
+    dayName: 'Sat', dayIndex: 5, type: 'time-trial',
+    title: '10-Minute Time Trial', color: '#60a5fa',
+    durationMin: 30, sessionLabel: '10 min ALL-OUT max calorie test',
+    targetRpm: { min: 55, max: 85 },
+    targetHr: { pctMin: 0.85, pctMax: 1.00 },
+    intervals: null,
+    details: '10 min easy warmup → 10 minutes at the hardest sustainable pace. Record total calories burned on the bike display and your final HR. Used to estimate VO₂max and track progress over the year. Cool down 10 min.',
+    timing: 'Fully rested. No lifting same day.'
+  };
+}
+
+// ---------- PHASE 1 (W1–6) ----------
+function buildPhase1(info, bump) {
+  const w = info.weekInPhase;            // 1..6
+  const deload = info.isDeload;          // true on W6
+  const factor = deload ? 0.6 : 1.0;
+  const rpmMax = 50 + bump.z2;
+
+  // Z2 durations: Mon/Wed 20→28, Fri 25→33 (+2/week)
+  const shortBase = 18 + w * 2;    // W1: 20 ... W5: 28
+  const longBase  = 23 + w * 2;    // W1: 25 ... W5: 33
+  const shortDur  = Math.round(shortBase * factor);
+  const longDur   = Math.round(longBase * factor);
+
+  // Saturday: intro intervals from W3; OFF in W1–2; OFF on deload (TT overlay)
+  let saturday;
+  if (deload || w < 3) {
+    saturday = makeOffDay('Sat');
+  } else {
+    const reps = w === 3 ? 6 : (w === 4 ? 7 : 8);  // W3=6, W4=7, W5=8
+    const workMin = Math.round((reps * (30 + 90)) / 60); // full rep time
+    saturday = {
+      dayName: 'Sat', dayIndex: 5, type: 'intro-intervals',
+      title: 'Intro Intervals', color: '#f59e0b',
+      durationMin: 10 + workMin,
+      sessionLabel: reps + '×30s ON / 90s OFF',
+      targetRpm: { min: 65, max: 72 },
+      targetHr: { pctMin: 0.70, pctMax: 0.80 },
+      intervals: { reps, workSec: 30, restSec: 90, workRpm: 68, workHrPct: [0.70, 0.80] },
+      details: '5 min warmup → ' + reps + ' rounds of 30s at 65–72 RPM (RPE 7) / 90s at 35 RPM recovery → 5 min cooldown. Short intros — teaching body to tolerate intensity.',
+      timing: 'Morning, NOT same day as lifting'
+    };
+  }
+
+  return [
+    makeZ2Day('Mon', 0, shortDur, { min: 40, max: rpmMax }, 'Zone 2 Engine Builder',
+      '40–50 RPM, arms active but relaxed. Nasal breathing only — if you can\'t breathe through your nose, slow down.',
+      'Morning or 6+ hrs separated from lifting'),
+    makeStrengthDay('Tue', 1),
+    makeZ2Day('Wed', 2, shortDur, { min: 40, max: rpmMax }, 'Zone 2 Engine Builder',
+      'Same protocol as Monday. Focus on smooth, rhythmic pedaling. Track avg RPM and HR.',
+      'Morning or 6+ hrs separated from lifting'),
+    makeStrengthDay('Thu', 3),
+    makeZ2Day('Fri', 4, longDur, { min: 40, max: rpmMax }, 'Zone 2 Long Session',
+      'Slightly longer session. Same intensity. This is your weekly "long ride."',
+      'Morning or 6+ hrs separated from lifting'),
+    saturday,
+    makeOffDay('Sun')
+  ];
+}
+
+// ---------- PHASE 2 (W7–14) ----------
+function buildPhase2(info, bump) {
+  const w = info.weekInPhase;      // 1..8 (W7–W14)
+  const deload = info.isDeload;    // W12 (w=6)
+  const factor = deload ? 0.6 : 1.0;
+  const z2Ceil = 52 + bump.z2;
+
+  // Z2 Mon: 30 → 40 ramping (smoothed across 8 weeks, minor hold-overs)
+  // Thu long: 35 → 45
+  const monBase = Math.min(40, 28 + w * 2);   // W7:30 W8:32 W9:34 W10:36 W11:38 W12:40 W13:40 W14:40
+  const thuBase = Math.min(45, 33 + w * 2);   // W7:35 W8:37 W9:39 W10:41 W11:43 W12:45 W13:45 W14:45
+  const monDur = Math.round(monBase * factor);
+  const thuDur = Math.round(thuBase * factor);
+
+  // Norwegian 4×4 RPM: base 60 + (w-1), ceiling rises with bump
+  const n44High = 60 + (w - 1) + bump.z2;  // W7:60 → W14:67 (+bump)
+  const n44Low  = Math.max(55, n44High - 5);
+  const n44 = { min: n44Low, max: n44High };
+
+  // Threshold: W7-8: 3×5, W9-10: 4×5, W11: 4×6, W13-14: 4×5 (consolidate)
+  let thReps, thWorkMin;
+  if (w <= 2)       { thReps = 3; thWorkMin = 5; }
+  else if (w <= 4)  { thReps = 4; thWorkMin = 5; }
+  else if (w === 5) { thReps = 4; thWorkMin = 6; }
+  else              { thReps = 4; thWorkMin = 5; }
+  if (deload)       { thReps = 2; thWorkMin = 4; }
+  const thBase = 55 + Math.floor((w - 1) / 2) + bump.threshold;
+
+  const mon = makeZ2Day('Mon', 0, monDur, { min: 45, max: z2Ceil }, 'Zone 2 Engine Builder',
+    '45–52 RPM, HR 60–70% max. Continue nasal breathing discipline.',
+    'Morning, or POST-lifting (after 10 min cooldown)');
+
+  const tue = deload ? makeOffDay('Tue') : {
+    dayName: 'Tue', dayIndex: 1, type: 'norwegian-4x4',
+    title: 'Norwegian 4×4 VO₂max', color: '#ef4444',
+    durationMin: 10 + 4*4 + 3*3 + 5,  // ≈ 40
+    sessionLabel: '4×4 min at ' + n44.min + '–' + n44.max + ' RPM',
+    targetRpm: n44,
+    targetHr: { pctMin: 0.90, pctMax: 0.95 },
+    intervals: { reps: 4, workSec: 240, restSec: 180, workRpm: n44.max, workHrPct: [0.90, 0.95] },
+    details: '10 min warmup (build 40→55 RPM) → 4×4 min at ' + n44.min + '–' + n44.max + ' RPM targeting 90–95% HRmax / 3 min active recovery at 35–40 RPM → 5 min cooldown. You MUST hit 90% HRmax by min 2 of each interval or you\'re going too easy.',
+    timing: 'Standalone session — no lifting same day if possible. If must combine, do AFTER lifting with 10 min rest.'
+  };
+
+  const wedDur = deload ? 12 : 20;
+  const wed = {
+    dayName: 'Wed', dayIndex: 2, type: 'strength-z2',
+    title: 'Strength + Z2 Cooldown', color: '#22c55e',
+    durationMin: wedDur,
+    sessionLabel: 'Lift + ' + wedDur + ' min Z2',
+    targetRpm: { min: 40, max: 48 + bump.z2 },
+    targetHr: { pctMin: 0.55, pctMax: 0.65 },
+    intervals: null,
+    details: 'Lift first. Then ' + wedDur + ' min easy airbike at 40–48 RPM as extended cooldown. HR stays under 65% max.',
+    timing: 'Z2 immediately after lifting is fine at this low intensity'
+  };
+
+  const thu = makeZ2Day('Thu', 3, thuDur, { min: 45, max: z2Ceil }, 'Zone 2 Long Session',
+    'Your mid-week long Z2 session. 45–52 RPM. Conversational pace.',
+    'Separated from lifting');
+
+  const fri = makeStrengthDay('Fri', 4);
+
+  const sat = deload ? makeOffDay('Sat') : {
+    dayName: 'Sat', dayIndex: 5, type: 'threshold',
+    title: 'Threshold Intervals', color: '#f97316',
+    durationMin: 8 + (thReps * thWorkMin) + ((thReps - 1) * 3) + 5,
+    sessionLabel: thReps + '×' + thWorkMin + ' min threshold',
+    targetRpm: { min: thBase, max: thBase + 7 },
+    targetHr: { pctMin: 0.80, pctMax: 0.88 },
+    intervals: { reps: thReps, workSec: thWorkMin * 60, restSec: 180, workRpm: thBase + 4, workHrPct: [0.80, 0.88] },
+    details: '8 min warmup → ' + thReps + '×' + thWorkMin + ' min at ' + thBase + '–' + (thBase + 7) + ' RPM (HR 80–88% max, RPE 7–8, "can speak 3–4 words") / 3 min recovery at 38 RPM → 5 min cooldown. This targets lactate threshold specifically.',
+    timing: 'Standalone session'
+  };
+
+  const sun = makeOffDay('Sun');
+  return [mon, tue, wed, thu, fri, sat, sun];
+}
+
+// ---------- PHASE 3 (W15–28) ----------
+function buildPhase3(info, bump) {
+  const w = info.weekInPhase;      // 1..14
+  const deload = info.isDeload;
+  const factor = deload ? 0.6 : 1.0;
+  const z2Ceil = 55 + bump.z2;
+
+  // Z2 Mon: 40 → 50 (rise every 2 wks)
+  const monBase = Math.min(50, 38 + Math.floor((w + 1) / 2) * 2);
+  // Thu long: 45 → 60 over course
+  const thuBase = Math.min(60, 43 + Math.floor((w + 1) / 2) * 2);
+  const monDur = Math.round(monBase * factor);
+  const thuDur = Math.round(thuBase * factor);
+
+  // Norwegian 4×4 RPM: 65 base + w-1, cap 78
+  const n44High = Math.min(78, 65 + (w - 1)) + bump.z2;
+  const n44Low  = Math.max(60, n44High - 5);
+  const n44 = { min: n44Low, max: n44High };
+
+  // Threshold: W15-16 3×6, W17-18 4×6, W19-20 3×8, W22-24 4×8, W25-26 4×8
+  let thReps, thWorkMin;
+  if (w <= 2)      { thReps = 3; thWorkMin = 6; }
+  else if (w <= 4) { thReps = 4; thWorkMin = 6; }
+  else if (w <= 6) { thReps = 3; thWorkMin = 8; }
+  else             { thReps = 4; thWorkMin = 8; }
+  if (deload)      { thReps = 2; thWorkMin = 5; }
+  const thBase = 57 + Math.floor((w - 1) / 3) + bump.threshold;
+
+  const mon = makeZ2Day('Mon', 0, monDur, { min: 48, max: z2Ceil }, 'Zone 2 Engine Builder',
+    '48–55 RPM. As fitness grows you\'ll hold higher RPM at the same HR. That\'s the proof it\'s working.',
+    'AM session or separated from PM lift by 6+ hrs');
+
+  const tue = deload ? makeOffDay('Tue') : {
+    dayName: 'Tue', dayIndex: 1, type: 'norwegian-4x4',
+    title: 'Norwegian 4×4 #1', color: '#ef4444',
+    durationMin: 38,
+    sessionLabel: '4×4 min at ' + n44.min + '–' + n44.max + ' RPM',
+    targetRpm: n44,
+    targetHr: { pctMin: 0.90, pctMax: 0.95 },
+    intervals: { reps: 4, workSec: 240, restSec: 180, workRpm: n44.max, workHrPct: [0.90, 0.95] },
+    details: '10 min warmup → 4×4 min at ' + n44.min + '–' + n44.max + ' RPM (90–95% HRmax) / 3 min recovery → 5 min cooldown. Push RPM up as fitness allows — the bike gets harder exponentially.',
+    timing: 'Standalone AM session ideal. If combining with lift, do AFTER lifting.'
+  };
+
+  const wedDur = deload ? 15 : 25;
+  const wed = {
+    dayName: 'Wed', dayIndex: 2, type: 'strength-z2',
+    title: 'Strength + Z2 Cooldown', color: '#22c55e',
+    durationMin: wedDur,
+    sessionLabel: 'Lift + ' + wedDur + ' min Z2',
+    targetRpm: { min: 42, max: 50 + bump.z2 },
+    targetHr: { pctMin: 0.55, pctMax: 0.65 },
+    intervals: null,
+    details: 'Lift first. Then ' + wedDur + ' min easy at 42–50 RPM. This does NOT count toward your "hard" 20%.',
+    timing: 'Z2 immediately post-lift is fine'
+  };
+
+  const thu = makeZ2Day('Thu', 3, thuDur, { min: 48, max: z2Ceil }, 'Zone 2 Long Session',
+    'This is your weekly long Z2. Build to 60 min by week 25. 48–55 RPM, conversational.',
+    'Separated from lifting');
+
+  const fri = deload ? makeStrengthDay('Fri', 4) : {
+    dayName: 'Fri', dayIndex: 4, type: 'norwegian-4x4',
+    title: 'Norwegian 4×4 #2 + Strength', color: '#ef4444',
+    durationMin: 38,
+    sessionLabel: '4×4 min → Lift',
+    targetRpm: n44,
+    targetHr: { pctMin: 0.90, pctMax: 0.95 },
+    intervals: { reps: 4, workSec: 240, restSec: 180, workRpm: n44.max, workHrPct: [0.90, 0.95] },
+    details: 'Reverse order on this day: do 4×4 intervals FIRST when fresh (cardiovascular priority), then lift. Or split AM bike / PM lift.',
+    timing: 'Bike AM, Lift PM ideal. Or bike-first same session.'
+  };
+
+  const sat = deload ? makeOffDay('Sat') : {
+    dayName: 'Sat', dayIndex: 5, type: 'threshold',
+    title: 'Threshold / Lactate Clearance', color: '#f97316',
+    durationMin: 8 + (thReps * thWorkMin) + ((thReps - 1) * 3) + 5,
+    sessionLabel: thReps + '×' + thWorkMin + ' min threshold',
+    targetRpm: { min: thBase, max: thBase + 8 },
+    targetHr: { pctMin: 0.82, pctMax: 0.88 },
+    intervals: { reps: thReps, workSec: thWorkMin * 60, restSec: 180, workRpm: thBase + 4, workHrPct: [0.82, 0.88] },
+    details: '8 min warmup → ' + thReps + '×' + thWorkMin + ' min at ' + thBase + '–' + (thBase + 8) + ' RPM (HR 82–88% max) / 3 min recovery → 5 min cooldown. By week 20, progress to 4×8 min blocks.',
+    timing: 'Standalone session'
+  };
+
+  const sun = makeOffDay('Sun');
+  return [mon, tue, wed, thu, fri, sat, sun];
+}
+
+// ---------- PHASE 4 (W29–52) ----------
+function buildPhase4(info, bump) {
+  const w = info.weekInPhase;      // 1..24 (W29–W52)
+  const deload = info.isDeload;
+  const isPeak = info.isPeak;
+  const factor = deload ? 0.6 : 1.0;
+  const useOverUnders = (w + 28) >= 33 && !deload;
+  const z2Ceil = 58 + bump.z2;
+
+  // Z2 Mon: 45 → 60
+  const monBase = Math.min(60, 44 + Math.floor(w / 2));
+  // Sat Z2 long: 50 → 60
+  const satBase = Math.min(60, 47 + Math.floor(w / 2));
+  const monDur = Math.round((isPeak ? monBase + 5 : monBase) * factor);
+  const satDur = Math.round(satBase * factor);
+
+  // Norwegian 4×4 RPM: 70 base, climbs by mesocycle
+  const n44High = Math.min(82, 70 + Math.floor((w - 1) / 3)) + bump.z2 + (isPeak ? 2 : 0);
+  const n44Low  = Math.max(65, n44High - 5);
+  const n44 = { min: n44Low, max: n44High };
+
+  // Threshold / over-under
+  const thBase = Math.min(70, 60 + Math.floor(w / 4)) + bump.threshold;
+
+  const mon = makeZ2Day('Mon', 0, monDur, { min: 50, max: z2Ceil }, 'Zone 2 Engine Builder',
+    '50–58 RPM at the same HR as before. Higher RPM at same HR = improved fitness. Track this metric monthly.',
+    'AM or separated from lifting');
+
+  const tue = deload ? makeOffDay('Tue') : {
+    dayName: 'Tue', dayIndex: 1, type: 'norwegian-4x4',
+    title: 'Norwegian 4×4 VO₂max', color: '#ef4444',
+    durationMin: 38,
+    sessionLabel: '4×4 min at ' + n44.min + '–' + n44.max + ' RPM',
+    targetRpm: n44,
+    targetHr: { pctMin: 0.90, pctMax: 0.95 },
+    intervals: { reps: 4, workSec: 240, restSec: 180, workRpm: n44.max, workHrPct: [0.90, 0.95] },
+    details: '4×4 min at ' + n44.min + '–' + n44.max + ' RPM (90–95% HRmax). By now your work capacity is dramatically higher. 3 min recovery.',
+    timing: 'Standalone or pre-lift'
+  };
+
+  const wedDur = deload ? 15 : 28;
+  const wed = {
+    dayName: 'Wed', dayIndex: 2, type: 'strength-z2',
+    title: 'Strength + Z2', color: '#22c55e',
+    durationMin: wedDur,
+    sessionLabel: 'Lift + ' + wedDur + ' min Z2',
+    targetRpm: { min: 44, max: 52 + bump.z2 },
+    targetHr: { pctMin: 0.55, pctMax: 0.65 },
+    intervals: null,
+    details: 'Lift first. Easy Z2 cooldown.',
+    timing: 'Same session fine'
+  };
+
+  let thu;
+  if (deload) {
+    thu = makeOffDay('Thu');
+  } else if (useOverUnders) {
+    thu = {
+      dayName: 'Thu', dayIndex: 3, type: 'over-under',
+      title: 'Threshold / Over-Unders', color: '#f97316',
+      durationMin: 48,
+      sessionLabel: '4×8 min over-unders',
+      targetRpm: { min: thBase - 4, max: thBase + 4 },
+      targetHr: { pctMin: 0.75, pctMax: 0.88 },
+      intervals: { reps: 4, workSec: 480, restSec: 180, workRpm: thBase, workHrPct: [0.75, 0.88], pattern: 'over-under' },
+      details: '8 min warmup → 4×8 min alternating 2 min at 88% HRmax / 1 min at 75% HRmax within each block / 3 min easy between blocks → cooldown. Trains lactate buffering — oscillate above and below threshold.',
+      timing: 'Standalone'
+    };
+  } else {
+    thu = {
+      dayName: 'Thu', dayIndex: 3, type: 'threshold',
+      title: 'Threshold Intervals', color: '#f97316',
+      durationMin: 42,
+      sessionLabel: '4×8 min threshold',
+      targetRpm: { min: thBase, max: thBase + 6 },
+      targetHr: { pctMin: 0.82, pctMax: 0.88 },
+      intervals: { reps: 4, workSec: 480, restSec: 180, workRpm: thBase + 3, workHrPct: [0.82, 0.88] },
+      details: '8 min warmup → 4×8 min at ' + thBase + '–' + (thBase + 6) + ' RPM (HR 82–88%) / 3 min recovery → 5 min cooldown.',
+      timing: 'Standalone'
+    };
+  }
+
+  const fri = deload ? makeStrengthDay('Fri', 4) : {
+    dayName: 'Fri', dayIndex: 4, type: 'norwegian-4x4',
+    title: 'Norwegian 4×4 #2 + Strength', color: '#ef4444',
+    durationMin: 38,
+    sessionLabel: '4×4 min → Lift',
+    targetRpm: n44,
+    targetHr: { pctMin: 0.90, pctMax: 0.95 },
+    intervals: { reps: 4, workSec: 240, restSec: 180, workRpm: n44.max, workHrPct: [0.90, 0.95] },
+    details: 'Second weekly 4×4. Then lift.',
+    timing: 'Bike AM / Lift PM or bike-first same session'
+  };
+
+  const sat = deload ? makeOffDay('Sat') : {
+    dayName: 'Sat', dayIndex: 5, type: 'z2-sprint',
+    title: 'Z2 Long + Sprint Finisher', color: '#22c55e',
+    durationMin: satDur + 12,
+    sessionLabel: satDur + ' min Z2 + 4×20s sprints',
+    targetRpm: { min: 50, max: z2Ceil },
+    targetHr: { pctMin: 0.60, pctMax: 0.70 },
+    intervals: { reps: 4, workSec: 20, restSec: 120, workRpm: 90, workHrPct: [0.85, 0.95], pattern: 'sprint-finisher', z2Min: satDur },
+    details: satDur + ' min long Z2 ride, then finish with 4×20s all-out sprints (90+ RPM) / 2 min full recovery between sprints. Develops anaerobic power on top of aerobic base.',
+    timing: 'Standalone'
+  };
+
+  const sun = makeOffDay('Sun');
+  return [mon, tue, wed, thu, fri, sat, sun];
+}
+
+/* ============================================================
+   FULL PLAN BUILDER + ADAPTIVE PROGRESSION ENGINE
+   Iterates W1..W52. For each week N>1, looks at week N-1's logs
+   and decides whether to bump, flatten, or suggest repeat.
+   Cumulative bumps carry forward.
+   ============================================================ */
+function buildFullPlan(state) {
+  const weeks = [];
+  const adjustments = {};
+  const bump = { z2: 0, threshold: 0 };
+
+  for (let w = 1; w <= 52; w++) {
+    if (w > 1) {
+      const prevWeekPlan = weeks[w - 2];
+      const prevLogs = logsForWeek(state, w - 1);
+      const adj = computeAdjustment(prevWeekPlan, prevLogs, state.settings);
+      if (adj) {
+        adjustments[w] = adj;
+        if (adj.bumpZ2) bump.z2 += adj.bumpZ2;
+        if (adj.bumpThreshold) bump.threshold += adj.bumpThreshold;
+      }
+    }
+    weeks.push(buildWeek(w, state.settings, bump));
+  }
+  return { weeks, adjustments };
+}
+
+/* Compute adaptive adjustment for week AFTER prevWeek, based on its logs.
+   Returns { bumpZ2, bumpThreshold, reason, flatten?, repeatSuggested? } or null. */
+function computeAdjustment(prevWeek, prevLogs, settings) {
+  // Skip deload weeks — no adjustment based on deloaded data
+  if (prevWeek.isDeload) return null;
+
+  // Only count actual bike sessions (not strength-only, not OFF, not TT)
+  const sessions = prevWeek.days.filter(d =>
+    d.type !== 'off' && d.type !== 'strength' && d.type !== 'time-trial'
+  );
+  if (sessions.length === 0) return null;
+
+  // Skip if user hasn't logged ANYTHING for the prior week — that means the
+  // week hasn't been attempted yet (future week) or the user hasn't started
+  // tracking. Don't nag them with a "repeat" banner based on absence of data.
+  const anyLog = sessions.some(d => prevLogs.byDay[d.dayIndex]);
+  if (!anyLog) return null;
+
+  const completedYes = sessions.filter(d => {
+    const log = prevLogs.byDay[d.dayIndex];
+    return log && log.completed === 'yes';
   });
-});
+  const missed = sessions.filter(d => {
+    const log = prevLogs.byDay[d.dayIndex];
+    return !log || log.completed === 'no';
+  }).length;
+
+  // Rule 1: ≥N missed → suggest repeat
+  if (missed >= TUNING.MISSED_REPEAT_THRESHOLD) {
+    return {
+      repeatSuggested: true,
+      reason: 'Missed ' + missed + ' session' + (missed === 1 ? '' : 's') + ' last week — consider repeating this week before progressing.'
+    };
+  }
+
+  // Rule 2: High avg RPE or missed >N → flatten
+  const rpes = completedYes
+    .map(d => (prevLogs.byDay[d.dayIndex] || {}).rpe)
+    .filter(v => Number.isFinite(v) && v > 0);
+  const avgRpe = rpes.length ? rpes.reduce((a, b) => a + b, 0) / rpes.length : 0;
+  if ((rpes.length >= 2 && avgRpe >= TUNING.HIGH_RPE_THRESHOLD) || missed > TUNING.MISSED_FLATTEN_THRESHOLD) {
+    return {
+      flatten: true,
+      reason: 'Flattening progression — ' + (avgRpe >= TUNING.HIGH_RPE_THRESHOLD ? 'avg RPE ' + avgRpe.toFixed(1) + ' is too high. ' : '') + (missed > TUNING.MISSED_FLATTEN_THRESHOLD ? 'Missed ' + missed + ' sessions. ' : '') + 'No RPM bump this week.'
+    };
+  }
+
+  // Rule 3: On-target Z2 → bump. We check: did user hit ≥90% of target RPM
+  // max at/below target HR max on ≥75% of Z2 sessions?
+  const z2 = completedYes.filter(d => d.type === 'z2-short' || d.type === 'z2-long');
+  if (z2.length < 2) return null;
+
+  const hrMaxBpm = settings.hrMax;
+  let onTarget = 0;
+  z2.forEach(d => {
+    const log = prevLogs.byDay[d.dayIndex];
+    if (!log) return;
+    const rpmTarget = d.targetRpm.max;
+    const hrTarget = d.targetHr.pctMax * hrMaxBpm * TUNING.Z2_HR_MAX_PCT;
+    const rpmOk = Number.isFinite(log.avgRpm) && log.avgRpm >= TUNING.Z2_RPM_HIT_PCT * rpmTarget;
+    const hrOk  = Number.isFinite(log.avgHr)  && log.avgHr  <= hrTarget;
+    if (rpmOk && hrOk) onTarget++;
+  });
+
+  if (onTarget / z2.length >= TUNING.ON_TARGET_FRACTION) {
+    return {
+      bumpZ2: TUNING.RPM_BUMP_Z2,
+      bumpThreshold: TUNING.RPM_BUMP_THRESHOLD,
+      reason: 'Z2 targets hit on ' + onTarget + '/' + z2.length + ' sessions — bumping Z2 ceiling +' + TUNING.RPM_BUMP_Z2 + ' RPM and threshold/VO₂max +' + TUNING.RPM_BUMP_THRESHOLD + ' RPM.'
+    };
+  }
+
+  return null; // normal progression, no bump
+}
+
+function logsForWeek(state, weekIndex) {
+  const byDay = {};
+  for (let d = 0; d < 7; d++) {
+    const date = dateForWeekDay(weekIndex, d, state.settings.startDate);
+    const key = isoDate(date);
+    if (state.logs[key]) byDay[d] = state.logs[key];
+  }
+  return { byDay };
+}
+
+/* ============================================================
+   PLAN CACHE
+   ============================================================ */
+let _planCache = null;
+let _planCacheKey = '';
+
+function getPlan() {
+  const key = JSON.stringify({ settings: state.settings, logs: Object.keys(state.logs).length, logHash: hashLogs() });
+  if (!_planCache || _planCacheKey !== key) {
+    _planCache = buildFullPlan(state);
+    _planCacheKey = key;
+  }
+  return _planCache;
+}
+function invalidatePlan() { _planCache = null; }
+function hashLogs() {
+  // Simple hash — detects log changes that affect adjustments
+  let h = 0;
+  Object.keys(state.logs).sort().forEach(k => {
+    const l = state.logs[k];
+    const s = k + (l.completed || '') + (l.avgRpm || 0) + (l.avgHr || 0) + (l.rpe || 0);
+    for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i) | 0;
+  });
+  return h;
+}
+
+/* ============================================================
+   VIEW STATE (non-persistent UI state)
+   ============================================================ */
+let state = loadState();
+let currentView = 'today';
+let viewState = {
+  week: { selectedWeek: null },       // null = use current week
+  plan: { openPhase: null, openWeek: null, openDay: null }
+};
+
+function h(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/* ============================================================
+   RENDER: TODAY
+   ============================================================ */
+function renderToday() {
+  const el = document.getElementById('view-today');
+  const cur = currentWeekIndex(state.settings);
+  const cdi = currentDayIndex(state.settings);
+
+  if (cur === 0) {
+    const daysUntil = Math.ceil((parseISO(state.settings.startDate) - todayDate()) / MS_PER_DAY);
+    el.innerHTML =
+      '<div class="banner info"><div class="banner-title">Program not started</div>' +
+      'Your 52-week program begins in <strong>' + daysUntil + ' day' + (daysUntil === 1 ? '' : 's') + '</strong> on ' + h(formatDate(parseISO(state.settings.startDate))) + '.<br><br>' +
+      'Change start date in <button class="btn" onclick="openSettings()">Settings</button> if you want to begin sooner.</div>' +
+      renderReferenceQuickLink();
+    return;
+  }
+
+  if (cur > 52) {
+    el.innerHTML =
+      '<div class="banner success"><div class="banner-title">Program complete</div>' +
+      'You finished all 52 weeks of the protocol. Check <strong>Progress</strong> for the full story.</div>';
+    return;
+  }
+
+  const plan = getPlan();
+  const week = plan.weeks[cur - 1];
+  const day = week.days[cdi];
+  const adj = plan.adjustments[cur];
+  const dateKey = isoDate(dateForWeekDay(cur, cdi, state.settings.startDate));
+  const existingLog = state.logs[dateKey];
+
+  // Header week label
+  document.getElementById('header-week').textContent =
+    'Week ' + cur + ' / 52 · ' + week.phaseName.split(':')[0];
+
+  // Weekly bodyweight prompt (Mondays when no weight logged this week)
+  let bwPromptHtml = '';
+  if (cdi === 0 && !hasBodyweightThisWeek(cur)) {
+    bwPromptHtml = renderBwPrompt();
+  }
+
+  // Yesterday summary
+  let yestHtml = '';
+  if (cdi > 0) {
+    const yestKey = isoDate(dateForWeekDay(cur, cdi - 1, state.settings.startDate));
+    const yestLog = state.logs[yestKey];
+    const yestDay = week.days[cdi - 1];
+    if (yestLog && yestDay && yestDay.type !== 'off' && yestDay.type !== 'strength') {
+      yestHtml = renderYesterdayCard(yestDay, yestLog);
+    }
+  }
+
+  const adjBanner = adj ? renderAdjustmentBanner(adj) : '';
+  const deloadBanner = week.isDeload
+    ? '<div class="banner warn"><div class="banner-title">Deload week</div>Volumes reduced ~40%. Recovery is training. Fully rest, hydrate, sleep. Trust the taper.</div>'
+    : '';
+  const ttBanner = week.isTimeTrial && day.type === 'time-trial'
+    ? '<div class="banner info"><div class="banner-title">Time Trial Day</div>Today\'s test maps your progress. Warm up thoroughly, go all out for 10 minutes, record total calories + final HR. Results feed your VO₂max trend chart.</div>'
+    : '';
+
+  const rxCard = renderRxCard(day, cur, cdi);
+
+  let bodyHtml = '';
+  if (day.type === 'off') {
+    bodyHtml = '<div class="log-form"><h3>Rest day</h3><p class="muted small">No logging needed. Use Week view to log any past session you missed.</p></div>';
+  } else if (day.type === 'strength') {
+    bodyHtml = '<div class="log-form"><h3>Lifting day</h3><p class="muted small">Log your strength session wherever you normally do. This tracker is airbike-only.</p></div>';
+  } else if (day.type === 'time-trial') {
+    bodyHtml = renderTimeTrialForm(cur, dateKey);
+  } else {
+    bodyHtml = renderLogForm(dateKey, existingLog, day);
+  }
+
+  el.innerHTML =
+    bwPromptHtml +
+    adjBanner +
+    deloadBanner +
+    ttBanner +
+    yestHtml +
+    rxCard +
+    bodyHtml;
+
+  attachLogFormHandlers(dateKey, day, cur, cdi);
+}
+
+function renderRxCard(day, weekIndex, dayIndex) {
+  const date = dateForWeekDay(weekIndex, dayIndex, state.settings.startDate);
+  const hrMax = state.settings.hrMax;
+  return '<div class="rx-card" style="border-left-color:' + day.color + '">' +
+    '<div class="rx-day">Week ' + weekIndex + ' · ' + day.dayName + ' · ' + h(formatDateShort(date)) + '</div>' +
+    '<div class="rx-type" style="color:' + day.color + '">' + h(day.title) + '</div>' +
+    '<div class="rx-session">' + h(day.sessionLabel) + '</div>' +
+    renderTargetTags(day, hrMax) +
+    '<div class="rx-details">' + h(day.details) + '</div>' +
+    '<div class="rx-timing">⊙ ' + h(day.timing) + '</div>' +
+  '</div>';
+}
+
+function renderTargetTags(day, hrMax) {
+  if (day.type === 'off' || day.type === 'strength') return '';
+  const tags = [];
+  if (day.durationMin) {
+    tags.push('<div class="rx-tag"><span class="lbl">Duration</span>' + day.durationMin + ' min</div>');
+  }
+  if (day.targetRpm) {
+    tags.push('<div class="rx-tag"><span class="lbl">RPM target</span>' + day.targetRpm.min + '–' + day.targetRpm.max + '</div>');
+  }
+  if (day.targetHr) {
+    const hrLo = Math.round(day.targetHr.pctMin * hrMax);
+    const hrHi = Math.round(day.targetHr.pctMax * hrMax);
+    const pctLo = Math.round(day.targetHr.pctMin * 100);
+    const pctHi = Math.round(day.targetHr.pctMax * 100);
+    tags.push('<div class="rx-tag"><span class="lbl">HR target</span>' + hrLo + '–' + hrHi + ' bpm <span class="muted">(' + pctLo + '–' + pctHi + '%)</span></div>');
+  }
+  if (day.intervals) {
+    const iv = day.intervals;
+    const workMin = iv.workSec >= 60 ? (iv.workSec / 60) + ' min' : iv.workSec + 's';
+    const restMin = iv.restSec >= 60 ? (iv.restSec / 60) + ' min' : iv.restSec + 's';
+    tags.push('<div class="rx-tag"><span class="lbl">Intervals</span>' + iv.reps + '×' + workMin + ' / ' + restMin + ' rest</div>');
+  }
+  return tags.length ? '<div class="rx-targets">' + tags.join('') + '</div>' : '';
+}
+
+function renderYesterdayCard(day, log) {
+  const bits = [];
+  if (Number.isFinite(log.durationMin)) bits.push(log.durationMin + ' min');
+  if (Number.isFinite(log.avgRpm))      bits.push(log.avgRpm + ' RPM avg');
+  if (Number.isFinite(log.avgHr))       bits.push(log.avgHr + ' bpm avg');
+  if (Number.isFinite(log.peakHr))      bits.push(log.peakHr + ' peak');
+  if (Number.isFinite(log.rpe))         bits.push('RPE ' + log.rpe);
+  return '<div class="yest-card"><h3>Yesterday · ' + h(day.title) + '</h3>' +
+    '<div class="yest-line"><strong>' + h(log.completed.toUpperCase()) + '</strong> · ' + h(bits.join(' · ')) + '</div>' +
+    (log.notes ? '<div class="yest-line muted small" style="margin-top:4px">' + h(log.notes) + '</div>' : '') +
+  '</div>';
+}
+
+function renderAdjustmentBanner(adj) {
+  if (adj.repeatSuggested) {
+    return '<div class="banner warn"><div class="banner-title">Suggested: repeat this week</div>' + h(adj.reason) + '</div>';
+  }
+  if (adj.flatten) {
+    return '<div class="banner warn"><div class="banner-title">Progression flattened</div>' + h(adj.reason) + '</div>';
+  }
+  if (adj.bumpZ2 || adj.bumpThreshold) {
+    return '<div class="banner success"><div class="banner-title">Progression bumped</div>' + h(adj.reason) + '</div>';
+  }
+  return '';
+}
+
+function renderBwPrompt() {
+  return '<div class="banner info"><div class="banner-title">Weekly bodyweight check</div>' +
+    'New training week. Log your bodyweight?<br>' +
+    '<div class="row" style="margin-top:10px">' +
+      '<input type="number" id="bw-input" step="0.1" placeholder="' + state.settings.bodyweightLb + '" style="flex:1;min-width:120px;background:#1a1a1a;border:1px solid var(--border);color:#fff;padding:10px;border-radius:6px;font-family:var(--mono);font-size:15px;min-height:44px">' +
+      '<button class="btn" onclick="handleBwLog()">Save ' + state.settings.units + '</button>' +
+    '</div></div>';
+}
+
+function renderLogForm(dateKey, existingLog, day) {
+  const l = existingLog || {};
+  const completed = l.completed || '';
+  const dur = Number.isFinite(l.durationMin) ? l.durationMin : (day.durationMin || '');
+  const avgRpm = Number.isFinite(l.avgRpm) ? l.avgRpm : '';
+  const avgHr = Number.isFinite(l.avgHr) ? l.avgHr : '';
+  const peakHr = Number.isFinite(l.peakHr) ? l.peakHr : '';
+  const rpe = Number.isFinite(l.rpe) ? l.rpe : 6;
+  const notes = l.notes || '';
+
+  return '<div class="log-form" id="log-form">' +
+    '<h3>Log this session</h3>' +
+    '<div class="form-row"><div class="form-field" style="flex:1 1 100%">' +
+      '<label>Completed?</label>' +
+      '<div class="completion-btns" id="completion-btns">' +
+        '<button type="button" data-val="yes" class="' + (completed === 'yes' ? 'selected yes' : '') + '">Yes</button>' +
+        '<button type="button" data-val="partial" class="' + (completed === 'partial' ? 'selected partial' : '') + '">Partial</button>' +
+        '<button type="button" data-val="no" class="' + (completed === 'no' ? 'selected no' : '') + '">No</button>' +
+      '</div>' +
+    '</div></div>' +
+    '<div class="form-row">' +
+      '<div class="form-field"><label>Actual duration (min)</label><input type="number" id="f-duration" step="1" min="0" value="' + h(dur) + '"></div>' +
+      '<div class="form-field"><label>Avg RPM</label><input type="number" id="f-avgrpm" step="1" min="0" value="' + h(avgRpm) + '"></div>' +
+    '</div>' +
+    '<div class="form-row">' +
+      '<div class="form-field"><label>Avg HR (bpm)</label><input type="number" id="f-avghr" step="1" min="0" value="' + h(avgHr) + '"></div>' +
+      '<div class="form-field"><label>Peak HR (bpm)</label><input type="number" id="f-peakhr" step="1" min="0" value="' + h(peakHr) + '"></div>' +
+    '</div>' +
+    '<div class="form-row"><div class="form-field" style="flex:1 1 100%">' +
+      '<label>RPE <span id="rpe-val" class="mono" style="color:#fff;float:right">' + rpe + '</span></label>' +
+      '<input type="range" id="f-rpe" min="1" max="10" step="1" value="' + rpe + '">' +
+    '</div></div>' +
+    '<div class="form-row"><div class="form-field" style="flex:1 1 100%">' +
+      '<label>Notes</label><textarea id="f-notes" placeholder="How did it feel? What did you notice?">' + h(notes) + '</textarea>' +
+    '</div></div>' +
+    '<button class="save-btn" id="save-log-btn">' + (existingLog ? 'Update log' : 'Save log') + '</button>' +
+  '</div>';
+}
+
+function renderTimeTrialForm(weekIndex, dateKey) {
+  const existing = state.timeTrials[weekIndex];
+  const cals = existing ? existing.cals : '';
+  const finalHr = existing ? existing.finalHr : '';
+  const bwAtTest = existing ? existing.bodyweight : state.settings.bodyweightLb;
+  const manual = existing ? existing.manualVo2 : '';
+
+  const preview = Number.isFinite(Number(cals)) && Number(cals) > 0
+    ? estimateVo2Max(Number(cals), Number(bwAtTest || state.settings.bodyweightLb)).toFixed(1) + ' ml/kg/min'
+    : '—';
+
+  return '<div class="log-form" id="tt-form">' +
+    '<h3>10-minute time trial</h3>' +
+    '<p class="muted small" style="margin-bottom:12px">Record your bike\'s total calories and final HR after the 10-min max effort. VO₂max estimate updates as you type.</p>' +
+    '<div class="form-row">' +
+      '<div class="form-field"><label>Total calories burned</label><input type="number" id="tt-cals" step="1" min="0" value="' + h(cals) + '"></div>' +
+      '<div class="form-field"><label>Final HR (bpm)</label><input type="number" id="tt-hr" step="1" min="0" value="' + h(finalHr) + '"></div>' +
+    '</div>' +
+    '<div class="form-row">' +
+      '<div class="form-field"><label>Bodyweight at test (' + state.settings.units + ')</label><input type="number" id="tt-bw" step="0.1" min="0" value="' + h(bwAtTest) + '"></div>' +
+      '<div class="form-field"><label>Measured VO₂max (override)</label><input type="number" id="tt-manual" step="0.1" min="0" value="' + h(manual) + '" placeholder="leave blank to estimate"></div>' +
+    '</div>' +
+    '<div class="rx-tag mono" style="margin-top:10px;background:#0d1117;border-color:#1e3a5f"><span class="lbl">VO₂max estimate</span><span id="tt-vo2" style="color:#60a5fa">' + preview + '</span></div>' +
+    '<p class="muted small" style="margin-top:12px">' + h(vo2maxFormulaText()) + '</p>' +
+    '<button class="save-btn" id="save-tt-btn">' + (existing ? 'Update time trial' : 'Save time trial') + '</button>' +
+  '</div>';
+}
+
+function renderReferenceQuickLink() {
+  return '<div class="banner info" style="margin-top:14px"><div class="banner-title">While you wait</div>Review the <button class="btn" onclick="navigate(\'reference\')">reference material</button> — HR zones, timing rules, and the three energy systems.</div>';
+}
+
+/* ============================================================
+   RENDER: WEEK
+   ============================================================ */
+function renderWeek() {
+  const el = document.getElementById('view-week');
+  const cur = currentWeekIndex(state.settings);
+  const selected = viewState.week.selectedWeek || Math.max(1, Math.min(52, cur || 1));
+  const plan = getPlan();
+  const week = plan.weeks[selected - 1];
+  if (!week) { el.innerHTML = '<p class="muted">Invalid week.</p>'; return; }
+
+  const adj = plan.adjustments[selected];
+  const volMin = weekTotalVolume(week);
+
+  let html = '';
+  html += '<div class="week-nav">';
+  html += '<button class="week-nav-btn" id="week-prev" ' + (selected <= 1 ? 'disabled' : '') + '>‹</button>';
+  html += '<div class="week-nav-label">Week ' + selected + ' / 52' +
+    (week.isDeload ? ' · <span style="color:var(--amber)">DELOAD</span>' : '') +
+    (week.isPeak ? ' · <span style="color:var(--red)">PEAK</span>' : '') +
+    '<span class="sub">' + h(weekRangeLabel(selected, state.settings.startDate)) + ' · ~' + volMin + ' min</span></div>';
+  html += '<button class="week-nav-btn" id="week-next" ' + (selected >= 52 ? 'disabled' : '') + '>›</button>';
+  html += '</div>';
+
+  if (adj) html += renderAdjustmentBanner(adj);
+
+  html += '<div style="margin-top:6px">';
+  for (let i = 0; i < 7; i++) {
+    html += renderDayRow(week, i, selected, cur);
+  }
+  html += '</div>';
+  el.innerHTML = html;
+
+  // Hookup
+  const prevBtn = document.getElementById('week-prev');
+  const nextBtn = document.getElementById('week-next');
+  if (prevBtn) prevBtn.onclick = () => { viewState.week.selectedWeek = selected - 1; renderWeek(); };
+  if (nextBtn) nextBtn.onclick = () => { viewState.week.selectedWeek = selected + 1; renderWeek(); };
+
+  document.querySelectorAll('#view-week .day-row').forEach(row => {
+    row.onclick = (e) => {
+      if (e.target.closest('input, textarea, button.save-btn, .completion-btns button, select')) return;
+      const wi = parseInt(row.dataset.week, 10);
+      const di = parseInt(row.dataset.day, 10);
+      toggleDayExpansion(row, wi, di);
+    };
+  });
+}
+
+function weekTotalVolume(week) {
+  let total = 0;
+  week.days.forEach(d => {
+    if (d.type !== 'off' && d.type !== 'strength' && Number.isFinite(d.durationMin)) total += d.durationMin;
+  });
+  return total;
+}
+
+function renderDayRow(week, dayIndex, weekIndex, currentWeek) {
+  const day = week.days[dayIndex];
+  const date = dateForWeekDay(weekIndex, dayIndex, state.settings.startDate);
+  const dateKey = isoDate(date);
+  const log = state.logs[dateKey];
+  const isToday = (weekIndex === currentWeek && dayIndex === currentDayIndex(state.settings));
+
+  let status;
+  if (day.type === 'off' || day.type === 'strength') {
+    status = '<span class="day-status">' + (day.type === 'off' ? 'REST' : 'LIFT') + '</span>';
+  } else if (log) {
+    status = '<span class="day-status ' + log.completed + '">' + log.completed.toUpperCase() + '</span>';
+  } else {
+    status = '<span class="day-status pending">PENDING</span>';
+  }
+
+  const actualDow = DAY_NAMES[(date.getDay() + 6) % 7];
+
+  return '<div class="day-row ' + (isToday ? 'today' : '') + '" data-week="' + weekIndex + '" data-day="' + dayIndex + '" style="border-left-color:' + day.color + '">' +
+    '<div class="day-top">' +
+      '<div class="day-label"><span class="dow">' + actualDow + '</span><span class="dnum">' + h(formatDateShort(date)) + '</span></div>' +
+      '<div class="day-type" style="color:' + day.color + '">' + h(day.title) + '</div>' +
+      status +
+    '</div>' +
+    '<div class="day-session">' + h(day.sessionLabel) + '</div>' +
+    '<div class="day-expanded" id="dayexp-' + weekIndex + '-' + dayIndex + '"></div>' +
+  '</div>';
+}
+
+function toggleDayExpansion(row, weekIndex, dayIndex) {
+  const expanded = row.classList.toggle('open');
+  if (!expanded) return;
+  const plan = getPlan();
+  const week = plan.weeks[weekIndex - 1];
+  const day = week.days[dayIndex];
+  const dateKey = isoDate(dateForWeekDay(weekIndex, dayIndex, state.settings.startDate));
+  const existingLog = state.logs[dateKey];
+  const expEl = row.querySelector('.day-expanded');
+  const hrMax = state.settings.hrMax;
+
+  let html = renderTargetTags(day, hrMax);
+  html += '<div class="rx-details" style="margin-top:8px;margin-bottom:8px">' + h(day.details) + '</div>';
+  html += '<div class="rx-timing" style="margin-bottom:12px">⊙ ' + h(day.timing) + '</div>';
+
+  if (day.type === 'off' || day.type === 'strength') {
+    // read-only
+  } else if (day.type === 'time-trial') {
+    html += renderTimeTrialForm(weekIndex, dateKey);
+  } else {
+    html += renderLogForm(dateKey, existingLog, day);
+  }
+  expEl.innerHTML = html;
+
+  if (day.type !== 'off' && day.type !== 'strength') {
+    attachLogFormHandlers(dateKey, day, weekIndex, dayIndex, expEl);
+  }
+}
+
+/* ============================================================
+   RENDER: PLAN
+   ============================================================ */
+function renderPlan() {
+  const el = document.getElementById('view-plan');
+  const plan = getPlan();
+  const cur = currentWeekIndex(state.settings);
+
+  let html = '<h2>52-Week Plan <small>' + h(state.settings.startDate) + ' → W52</small></h2>';
+
+  PHASES_INFO.forEach(phase => {
+    const open = viewState.plan.openPhase === phase.id;
+    const weeksInPhase = plan.weeks.slice(phase.weekRange[0] - 1, phase.weekRange[1]);
+    html += '<div class="phase-accordion ' + (open ? 'open' : '') + '" data-phase="' + phase.id + '">';
+    html += '<div class="phase-head" data-phase="' + phase.id + '">';
+    html += '<div class="phase-head-left">';
+    html += '<h3>' + h(phase.name) + '</h3>';
+    html += '<div class="phase-meta">Weeks ' + phase.weekRange[0] + '–' + phase.weekRange[1] + ' · ' + h(phase.subtitle) + '</div>';
+    html += '</div><div class="phase-arrow">▸</div></div>';
+    html += '<div class="phase-body">';
+    html += '<div class="phase-subtitle">' + h(phase.science) + '</div>';
+    html += '<div class="phase-goal"><div class="lbl">Goal</div>' + h(phase.goal) + '</div>';
+
+    weeksInPhase.forEach(week => {
+      const wi = week.weekIndex;
+      const wopen = viewState.plan.openWeek === wi;
+      const adj = plan.adjustments[wi];
+      const classes = ['week-row'];
+      if (week.isDeload) classes.push('deload');
+      if (week.isTimeTrial) classes.push('tt');
+      if (wi === cur) classes.push('current');
+      if (wopen) classes.push('open');
+      html += '<div class="' + classes.join(' ') + '" data-week="' + wi + '">';
+      html += '<div class="week-top">';
+      html += '<div>';
+      html += '<div class="week-label">Week ' + wi + (week.isDeload ? ' · DELOAD' : '') + (week.isTimeTrial ? ' · TIME TRIAL' : '') + (week.isPeak ? ' · PEAK' : '') + '</div>';
+      html += '<div class="week-dates">' + h(weekRangeLabel(wi, state.settings.startDate)) + '</div>';
+      html += '</div>';
+      html += '<div class="week-vol">~' + weekTotalVolume(week) + ' min</div>';
+      html += '</div>';
+      html += '<div class="week-row-body">';
+      if (adj) html += '<div class="week-adjustment">⚙ ' + h(adj.reason) + '</div>';
+      for (let i = 0; i < 7; i++) {
+        const d = week.days[i];
+        const date = dateForWeekDay(wi, i, state.settings.startDate);
+        html += '<div style="padding:6px 0;border-bottom:1px solid var(--border3);display:flex;gap:10px;align-items:baseline">';
+        html += '<div class="mono" style="color:#fff;min-width:42px;font-size:11px">' + d.dayName + '</div>';
+        html += '<div style="flex:1"><div style="color:' + d.color + ';font-weight:600;font-size:13px">' + h(d.title) + '</div>';
+        html += '<div class="muted small" style="margin-top:2px">' + h(d.sessionLabel) + '</div></div>';
+        html += '</div>';
+      }
+      html += '</div></div>';
+    });
+
+    html += '</div></div>';
+  });
+
+  el.innerHTML = html;
+
+  // Accordion handlers
+  document.querySelectorAll('#view-plan .phase-head').forEach(head => {
+    head.onclick = () => {
+      const pid = head.dataset.phase;
+      viewState.plan.openPhase = viewState.plan.openPhase === pid ? null : pid;
+      renderPlan();
+    };
+  });
+  document.querySelectorAll('#view-plan .week-row').forEach(row => {
+    row.onclick = (e) => {
+      e.stopPropagation();
+      const wi = parseInt(row.dataset.week, 10);
+      viewState.plan.openWeek = viewState.plan.openWeek === wi ? null : wi;
+      renderPlan();
+    };
+  });
+}
+
+/* ============================================================
+   RENDER: PROGRESS
+   ============================================================ */
+function renderProgress() {
+  const el = document.getElementById('view-progress');
+  const plan = getPlan();
+  const cur = currentWeekIndex(state.settings);
+  const stats = computeStats(plan, cur);
+
+  let html = '<h2>Progress</h2>';
+  html += '<div class="stat-grid">';
+  html += statBox('Sessions logged', stats.totalLogged, '');
+  html += statBox('Total minutes', Math.round(stats.totalMin), '');
+  html += statBox('Adherence', Math.round(stats.adherence * 100) + '%', '');
+  html += statBox('Latest VO₂max', stats.latestVo2 !== null ? stats.latestVo2.toFixed(1) : '—', stats.latestVo2 !== null ? 'ml/kg/min' : '');
+  html += '</div>';
+
+  html += chartBlock('Weekly training volume', 'Total airbike minutes logged per week',
+    stats.weeklyVolume, 'bar', '#22c55e', 'min');
+
+  html += chartBlock('Zone 2 average RPM trend', 'Higher RPM at same HR = fitter engine',
+    stats.z2RpmTrend, 'line', '#22c55e', 'RPM');
+
+  html += chartBlock('Efficiency: HR at Zone 2 target RPM', 'Lower HR at same RPM = improving',
+    stats.z2HrTrend, 'line', '#60a5fa', 'bpm');
+
+  html += chartBlock('Bodyweight', 'Weekly weight log',
+    stats.bwTrend, 'line', '#f59e0b', state.settings.units);
+
+  html += chartBlock('10-min time trial (calories)', 'Calories burned in the monthly max test',
+    stats.ttCals, 'bar', '#ef4444', 'cals');
+
+  html += chartBlock('VO₂max estimate trend', vo2maxFormulaText(),
+    stats.vo2Trend, 'line', '#60a5fa', 'ml/kg/min');
+
+  html += '<div class="chart"><h3>Export / import</h3>' +
+    '<p class="muted small" style="margin-bottom:12px">Back up your data or move it to another device. localStorage can be wiped by browser settings, so export regularly.</p>' +
+    '<div class="row">' +
+    '<button class="btn" onclick="handleExport()">Export JSON</button>' +
+    '<button class="btn" onclick="handleImportClick()">Import JSON</button>' +
+    '<input type="file" id="import-file" accept="application/json" style="display:none">' +
+    '</div></div>';
+
+  el.innerHTML = html;
+
+  const fi = document.getElementById('import-file');
+  if (fi) fi.onchange = handleImportFile;
+}
+
+function statBox(label, val, unit) {
+  return '<div class="stat-box"><div class="stat-label">' + h(label) + '</div>' +
+    '<div class="stat-val">' + h(val) + (unit ? ' <span class="stat-unit">' + h(unit) + '</span>' : '') + '</div></div>';
+}
+
+function chartBlock(title, sub, data, kind, color, unit) {
+  let body;
+  if (!data || data.length < 2) {
+    body = '<div class="chart-empty">Not enough data yet — log sessions to fill this chart.</div>';
+  } else {
+    body = (kind === 'bar' ? barChart(data, color, unit) : lineChart(data, color, unit));
+  }
+  return '<div class="chart"><h3>' + h(title) + '</h3><div class="chart-sub">' + h(sub) + '</div>' + body + '</div>';
+}
+
+function lineChart(data, color, unit) {
+  const w = 680, hh = 180, pad = { t: 14, r: 14, b: 28, l: 40 };
+  const xs = data.map((d, i) => i);
+  const ys = data.map(d => d.y);
+  const minY = Math.min.apply(null, ys);
+  const maxY = Math.max.apply(null, ys);
+  const rangeY = (maxY - minY) || 1;
+  const plotW = w - pad.l - pad.r;
+  const plotH = hh - pad.t - pad.b;
+
+  const pts = data.map((d, i) => {
+    const x = pad.l + (data.length === 1 ? plotW/2 : (i / (data.length - 1)) * plotW);
+    const y = pad.t + plotH - ((d.y - minY) / rangeY) * plotH;
+    return { x, y, label: d.label, val: d.y };
+  });
+
+  const path = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const circles = pts.map(p => '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="3" fill="' + color + '"/>').join('');
+  const yLabels = [minY, (minY + maxY) / 2, maxY].map((v, i) => {
+    const y = pad.t + plotH - ((v - minY) / rangeY) * plotH;
+    return '<text class="axis-label" x="' + (pad.l - 6) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="end">' + (Math.round(v * 10) / 10) + '</text>' +
+      '<line class="grid" x1="' + pad.l + '" y1="' + y.toFixed(1) + '" x2="' + (w - pad.r) + '" y2="' + y.toFixed(1) + '"/>';
+  }).join('');
+  const xLabels = (() => {
+    const step = Math.max(1, Math.ceil(data.length / 6));
+    let out = '';
+    for (let i = 0; i < data.length; i += step) {
+      const x = pad.l + (i / Math.max(1, data.length - 1)) * plotW;
+      out += '<text class="axis-label" x="' + x.toFixed(1) + '" y="' + (hh - 10) + '" text-anchor="middle">' + h(data[i].label) + '</text>';
+    }
+    return out;
+  })();
+
+  return '<svg viewBox="0 0 ' + w + ' ' + hh + '" role="img">' +
+    yLabels + xLabels +
+    '<path d="' + path + '" fill="none" stroke="' + color + '" stroke-width="2"/>' +
+    circles +
+    '</svg>' +
+    '<div class="chart-foot"><span>Latest: ' + (Math.round(data[data.length - 1].y * 10) / 10) + ' ' + unit + '</span>' +
+    '<span>' + (data.length) + ' pts</span></div>';
+}
+
+function barChart(data, color, unit) {
+  const w = 680, hh = 180, pad = { t: 14, r: 14, b: 28, l: 40 };
+  const ys = data.map(d => d.y);
+  const maxY = Math.max.apply(null, ys) || 1;
+  const plotW = w - pad.l - pad.r;
+  const plotH = hh - pad.t - pad.b;
+  const barW = plotW / data.length * 0.8;
+  const gap = plotW / data.length * 0.2;
+
+  const bars = data.map((d, i) => {
+    const x = pad.l + i * (barW + gap) + gap / 2;
+    const hBar = (d.y / maxY) * plotH;
+    const y = pad.t + plotH - hBar;
+    return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + hBar.toFixed(1) + '" fill="' + color + '" opacity="0.7"/>';
+  }).join('');
+
+  const yLabels = [0, maxY / 2, maxY].map(v => {
+    const y = pad.t + plotH - (v / maxY) * plotH;
+    return '<text class="axis-label" x="' + (pad.l - 6) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '</text>' +
+      '<line class="grid" x1="' + pad.l + '" y1="' + y.toFixed(1) + '" x2="' + (w - pad.r) + '" y2="' + y.toFixed(1) + '"/>';
+  }).join('');
+  const xLabels = (() => {
+    const step = Math.max(1, Math.ceil(data.length / 8));
+    let out = '';
+    for (let i = 0; i < data.length; i += step) {
+      const x = pad.l + i * (barW + gap) + gap / 2 + barW / 2;
+      out += '<text class="axis-label" x="' + x.toFixed(1) + '" y="' + (hh - 10) + '" text-anchor="middle">' + h(data[i].label) + '</text>';
+    }
+    return out;
+  })();
+
+  return '<svg viewBox="0 0 ' + w + ' ' + hh + '" role="img">' +
+    yLabels + xLabels + bars +
+    '</svg>' +
+    '<div class="chart-foot"><span>Latest: ' + Math.round(data[data.length - 1].y) + ' ' + unit + '</span>' +
+    '<span>' + data.length + ' weeks</span></div>';
+}
+
+function computeStats(plan, cur) {
+  const logs = state.logs;
+  const out = {
+    totalLogged: 0, totalMin: 0, adherence: 0,
+    latestVo2: null, weeklyVolume: [], z2RpmTrend: [], z2HrTrend: [],
+    bwTrend: [], ttCals: [], vo2Trend: []
+  };
+
+  // Weekly volume + adherence
+  let completedSessions = 0, totalPossibleSessions = 0;
+  for (let w = 1; w <= Math.min(52, Math.max(1, cur)); w++) {
+    const week = plan.weeks[w - 1];
+    let wkMin = 0;
+    week.days.forEach((d, di) => {
+      if (d.type === 'off' || d.type === 'strength') return;
+      totalPossibleSessions++;
+      const key = isoDate(dateForWeekDay(w, di, state.settings.startDate));
+      const log = logs[key];
+      if (log && log.completed === 'yes') {
+        completedSessions++;
+        if (Number.isFinite(log.durationMin)) wkMin += log.durationMin;
+        out.totalLogged++;
+      } else if (log && log.completed === 'partial') {
+        if (Number.isFinite(log.durationMin)) wkMin += log.durationMin;
+        out.totalLogged++;
+      }
+    });
+    if (wkMin > 0) {
+      out.weeklyVolume.push({ label: 'W' + w, y: wkMin });
+      out.totalMin += wkMin;
+    }
+  }
+  out.adherence = totalPossibleSessions ? completedSessions / totalPossibleSessions : 0;
+
+  // Z2 RPM & HR trend (per-week avg of Z2 sessions)
+  for (let w = 1; w <= Math.min(52, Math.max(1, cur)); w++) {
+    const week = plan.weeks[w - 1];
+    let rpmSum = 0, rpmCount = 0, hrSum = 0, hrCount = 0;
+    week.days.forEach((d, di) => {
+      if (d.type !== 'z2-short' && d.type !== 'z2-long') return;
+      const key = isoDate(dateForWeekDay(w, di, state.settings.startDate));
+      const log = logs[key];
+      if (!log) return;
+      if (Number.isFinite(log.avgRpm)) { rpmSum += log.avgRpm; rpmCount++; }
+      if (Number.isFinite(log.avgHr))  { hrSum  += log.avgHr;  hrCount++;  }
+    });
+    if (rpmCount) out.z2RpmTrend.push({ label: 'W' + w, y: rpmSum / rpmCount });
+    if (hrCount)  out.z2HrTrend.push({  label: 'W' + w, y: hrSum / hrCount  });
+  }
+
+  // Bodyweight trend
+  Object.keys(state.bodyweightLog).sort().forEach(k => {
+    out.bwTrend.push({ label: k.slice(5), y: state.bodyweightLog[k] });
+  });
+
+  // Time trials
+  Object.keys(state.timeTrials).map(Number).sort((a, b) => a - b).forEach(wk => {
+    const tt = state.timeTrials[wk];
+    if (Number.isFinite(tt.cals)) out.ttCals.push({ label: 'W' + wk, y: tt.cals });
+    const vo2 = Number.isFinite(tt.manualVo2) && tt.manualVo2 > 0 ? tt.manualVo2 : tt.vo2max;
+    if (Number.isFinite(vo2)) {
+      out.vo2Trend.push({ label: 'W' + wk, y: vo2 });
+      out.latestVo2 = vo2;
+    }
+  });
+
+  return out;
+}
+
+/* ============================================================
+   RENDER: REFERENCE (preserved original content)
+   ============================================================ */
+function renderReference() {
+  const el = document.getElementById('view-reference');
+  const zones = hrZones(state.settings.hrMax);
+
+  let html = '<h2>Reference <small>zones · timing · systems</small></h2>';
+
+  // HR Zones
+  html += '<div class="panel"><h3>Your Heart Rate Zones (HRmax ' + state.settings.hrMax + ')</h3>' +
+    '<p>Using the 220−age formula by default. Get a chest strap HR monitor — wrist monitors are unreliable at high intensity.</p>' +
+    '<div class="table-wrap"><table class="zones"><thead><tr><th>Zone</th><th>%HRmax</th><th>BPM</th><th>RPM*</th><th>Purpose</th></tr></thead><tbody>';
+  zones.forEach(z => {
+    html += '<tr><td class="mono" style="color:' + z.color + ';font-weight:700">' + z.name + '</td>' +
+      '<td class="mono">' + z.pct + '</td>' +
+      '<td class="mono" style="color:#fff">' + z.bpm + '</td>' +
+      '<td class="mono">' + z.rpm + '</td>' +
+      '<td>' + z.purpose + '</td></tr>';
+  });
+  html += '</tbody></table></div>' +
+    '<p class="italic-note">*RPMs are approximate for a 280lb male on a standard Assault/Echo bike. At your weight, the bike provides MORE resistance than for a lighter person — your actual RPM targets may be 5–10 lower. Always defer to HR over RPM.</p></div>';
+
+  // Timing rules
+  html += '<div class="panel"><h3>When to Bike vs. When to Lift</h3>';
+  TIMING_RULES.forEach(r => {
+    html += '<div class="timing-rule">' +
+      '<div class="timing-rule-title">' + h(r.title) + '</div>' +
+      '<div class="timing-rule-detail">' + h(r.detail) + '</div>' +
+      '<div class="timing-rule-source">' + h(r.source) + '</div>' +
+      '</div>';
+  });
+  html += '</div>';
+
+  // Non-negotiable rules
+  html += '<div class="rules-box"><h3>NON-NEGOTIABLE RULES</h3><div class="rules-text">';
+  NON_NEG_RULES.forEach(r => {
+    html += '<div><strong>' + r.n + '. ' + h(r.title) + '</strong> ' + h(r.text) + '</div>';
+  });
+  html += '</div></div>';
+
+  // Three energy systems
+  html += '<div class="systems-box"><h3>THE THREE SYSTEMS YOU\'RE TRAINING</h3>';
+  ENERGY_SYSTEMS.forEach(s => {
+    html += '<div class="system-item">' +
+      '<div class="system-title" style="color:' + s.color + '">' + h(s.title) + '</div>' +
+      '<div class="system-text">' + h(s.text) + '</div></div>';
+  });
+  html += '</div>';
+
+  // How progression works (meta)
+  html += '<div class="panel science"><h3>How the adaptive engine works</h3>' +
+    '<p style="color:#b5b5b5;line-height:1.7">Every week, the tracker reviews the previous week\'s logs and decides whether to bump, hold, or suggest repeating. The rules (see <em>index.html</em>, search <code>TUNING</code>):</p>' +
+    '<div class="rules-text" style="padding:0 4px">' +
+    '<div><strong>Missed ≥3 sessions</strong> → banner suggests repeating the week.</div>' +
+    '<div><strong>Avg RPE ≥9 or missed >1</strong> → progression flattens. No RPM bump.</div>' +
+    '<div><strong>Z2 targets hit on ≥75% of sessions</strong> → Z2 RPM +1, threshold/VO₂max RPM +2. Bumps are cumulative.</div>' +
+    '<div><strong>Otherwise</strong> → normal built-in progression continues.</div>' +
+    '</div><p style="color:#b5b5b5;line-height:1.7;margin-top:12px">To tune the thresholds, edit the <code>TUNING</code> constant at the top of the script block in <code>index.html</code>.</p></div>';
+
+  el.innerHTML = html;
+}
+
+/* ============================================================
+   LOG FORM HANDLERS
+   ============================================================ */
+function attachLogFormHandlers(dateKey, day, weekIndex, dayIndex, container) {
+  container = container || document;
+
+  // completion buttons
+  const compBtns = container.querySelectorAll('#log-form .completion-btns button, .completion-btns button');
+  compBtns.forEach(btn => {
+    btn.onclick = () => {
+      container.querySelectorAll('.completion-btns button').forEach(b => {
+        const v = b.dataset.val;
+        b.className = b === btn ? ('selected ' + v) : '';
+      });
+    };
+  });
+
+  // RPE slider live display
+  const rpe = container.querySelector('#f-rpe');
+  const rpeVal = container.querySelector('#rpe-val');
+  if (rpe && rpeVal) {
+    rpe.oninput = () => { rpeVal.textContent = rpe.value; };
+  }
+
+  // save button
+  const saveBtn = container.querySelector('#save-log-btn');
+  if (saveBtn) {
+    saveBtn.onclick = () => {
+      const selected = container.querySelector('.completion-btns button.selected');
+      if (!selected) { alert('Pick Yes / Partial / No first.'); return; }
+      const log = {
+        weekIndex, dayIndex,
+        completed: selected.dataset.val,
+        durationMin: numOrNull(container.querySelector('#f-duration').value),
+        avgRpm: numOrNull(container.querySelector('#f-avgrpm').value),
+        avgHr: numOrNull(container.querySelector('#f-avghr').value),
+        peakHr: numOrNull(container.querySelector('#f-peakhr').value),
+        rpe: numOrNull(container.querySelector('#f-rpe').value),
+        notes: (container.querySelector('#f-notes').value || '').trim(),
+        ts: Date.now()
+      };
+      state.logs[dateKey] = log;
+      saveState(state);
+      invalidatePlan();
+      saveBtn.textContent = 'Saved ✓';
+      saveBtn.classList.add('saved');
+      setTimeout(() => { renderCurrentView(); }, 400);
+    };
+  }
+
+  // time trial save
+  const ttBtn = container.querySelector('#save-tt-btn');
+  if (ttBtn) {
+    const calsIn = container.querySelector('#tt-cals');
+    const hrIn   = container.querySelector('#tt-hr');
+    const bwIn   = container.querySelector('#tt-bw');
+    const manIn  = container.querySelector('#tt-manual');
+    const vo2Out = container.querySelector('#tt-vo2');
+    function updatePreview() {
+      const c = Number(calsIn.value);
+      const bw = Number(bwIn.value) || state.settings.bodyweightLb;
+      if (c > 0) vo2Out.textContent = estimateVo2Max(c, bw).toFixed(1) + ' ml/kg/min';
+      else vo2Out.textContent = '—';
+    }
+    [calsIn, bwIn].forEach(i => i && (i.oninput = updatePreview));
+
+    ttBtn.onclick = () => {
+      const cals = Number(calsIn.value);
+      const finalHr = Number(hrIn.value);
+      const bw = Number(bwIn.value) || state.settings.bodyweightLb;
+      const manualVo2 = Number(manIn.value);
+      if (!cals || cals <= 0) { alert('Enter total calories burned.'); return; }
+      const est = estimateVo2Max(cals, bw);
+      state.timeTrials[weekIndex] = {
+        dateKey, cals, finalHr: Number.isFinite(finalHr) ? finalHr : null,
+        bodyweight: bw,
+        vo2max: est,
+        manualVo2: (Number.isFinite(manualVo2) && manualVo2 > 0) ? manualVo2 : null,
+        source: (Number.isFinite(manualVo2) && manualVo2 > 0) ? 'measured' : 'estimated',
+        ts: Date.now()
+      };
+      // Also create a completed log entry for the day so charts/adherence see it
+      state.logs[dateKey] = Object.assign({
+        weekIndex, dayIndex, completed: 'yes',
+        durationMin: 30, avgRpm: null, avgHr: null, peakHr: finalHr, rpe: 10,
+        notes: 'Time trial: ' + cals + ' cals, VO₂max est ' + est.toFixed(1),
+        ts: Date.now()
+      }, state.logs[dateKey] || {});
+      state.logs[dateKey].completed = 'yes';
+      saveState(state);
+      invalidatePlan();
+      ttBtn.textContent = 'Saved ✓';
+      ttBtn.classList.add('saved');
+      setTimeout(() => { renderCurrentView(); }, 400);
+    };
+  }
+}
+function numOrNull(v) {
+  if (v === '' || v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+/* ============================================================
+   BODYWEIGHT
+   ============================================================ */
+function hasBodyweightThisWeek(weekIndex) {
+  for (let d = 0; d < 7; d++) {
+    const key = isoDate(dateForWeekDay(weekIndex, d, state.settings.startDate));
+    if (state.bodyweightLog[key]) return true;
+  }
+  return false;
+}
+function handleBwLog() {
+  const input = document.getElementById('bw-input');
+  if (!input) return;
+  const val = Number(input.value);
+  if (!val || val <= 0) { alert('Enter a valid weight.'); return; }
+  const key = isoDate(todayDate());
+  state.bodyweightLog[key] = val;
+  state.settings.bodyweightLb = state.settings.units === 'lb' ? val : val * 2.2046;
+  saveState(state);
+  invalidatePlan();
+  renderCurrentView();
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+function openSettings() {
+  const root = document.getElementById('modal-root');
+  const s = state.settings;
+  root.innerHTML =
+    '<div class="modal">' +
+      '<h2>Settings</h2>' +
+      '<div class="modal-sub">Changes recalculate HR zones and targets live</div>' +
+      '<div class="form-row"><div class="form-field"><label>HRmax (bpm)</label>' +
+      '<input type="number" id="s-hrmax" value="' + s.hrMax + '" min="100" max="220"></div></div>' +
+      '<div class="form-row"><div class="form-field"><label>Bodyweight</label>' +
+      '<input type="number" id="s-bw" value="' + s.bodyweightLb + '" step="0.1"></div>' +
+      '<div class="form-field"><label>Units</label><select id="s-units">' +
+      '<option value="lb" ' + (s.units === 'lb' ? 'selected' : '') + '>lb</option>' +
+      '<option value="kg" ' + (s.units === 'kg' ? 'selected' : '') + '>kg</option>' +
+      '</select></div></div>' +
+      '<div class="form-row"><div class="form-field"><label>Program start date</label>' +
+      '<input type="date" id="s-start" value="' + s.startDate + '"></div></div>' +
+      '<div class="form-row"><div class="form-field"><label>Manual VO₂max (override TT estimate)</label>' +
+      '<input type="number" id="s-vo2" step="0.1" value="' + (s.vo2maxManual || '') + '" placeholder="leave blank to use estimate"></div></div>' +
+      '<hr class="hr">' +
+      '<div class="row"><button class="btn" onclick="handleExport()">Export backup</button>' +
+      '<button class="btn" onclick="handleImportClick()">Import backup</button>' +
+      '<input type="file" id="import-file-modal" accept="application/json" style="display:none"></div>' +
+      '<div style="margin-top:12px"><button class="btn btn-danger" onclick="handleResetData()">Erase all data</button></div>' +
+      '<div class="modal-footer">' +
+      '<button class="btn-secondary" onclick="closeSettings()">Cancel</button>' +
+      '<button class="btn-primary" onclick="handleSettingsSave()">Save</button>' +
+      '</div>' +
+    '</div>';
+  root.classList.add('open');
+  const fi = document.getElementById('import-file-modal');
+  if (fi) fi.onchange = handleImportFile;
+}
+function closeSettings() {
+  document.getElementById('modal-root').classList.remove('open');
+}
+function handleSettingsSave() {
+  const hrMax = Number(document.getElementById('s-hrmax').value);
+  const bw = Number(document.getElementById('s-bw').value);
+  const units = document.getElementById('s-units').value;
+  const start = document.getElementById('s-start').value;
+  const vo2 = Number(document.getElementById('s-vo2').value);
+
+  if (hrMax < 100 || hrMax > 220) { alert('HRmax should be between 100 and 220.'); return; }
+  if (bw <= 0) { alert('Enter a valid bodyweight.'); return; }
+  if (!start) { alert('Pick a start date.'); return; }
+
+  state.settings.hrMax = hrMax;
+  state.settings.bodyweightLb = units === 'lb' ? bw : bw * 2.2046;
+  state.settings.units = units;
+  state.settings.startDate = start;
+  state.settings.vo2maxManual = (Number.isFinite(vo2) && vo2 > 0) ? vo2 : null;
+  saveState(state);
+  invalidatePlan();
+  closeSettings();
+  renderCurrentView();
+}
+function handleResetData() {
+  if (!confirm('Erase ALL tracking data (logs, time trials, bodyweight, settings)? This cannot be undone. Export a backup first if unsure.')) return;
+  if (!confirm('Really erase everything?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = loadState();
+  invalidatePlan();
+  closeSettings();
+  renderCurrentView();
+}
+
+/* ============================================================
+   EXPORT / IMPORT
+   ============================================================ */
+function handleExport() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'airbike-backup-' + isoDate(new Date()) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+function handleImportClick() {
+  const el = document.getElementById('import-file-modal') || document.getElementById('import-file');
+  if (el) el.click();
+}
+function handleImportFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed || typeof parsed !== 'object') throw new Error('Invalid file');
+      if (!confirm('Replace all current data with the imported backup? This cannot be undone.')) return;
+      state = migrate(parsed);
+      saveState(state);
+      invalidatePlan();
+      closeSettings();
+      renderCurrentView();
+      alert('Import successful.');
+    } catch (err) {
+      alert('Import failed: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* ============================================================
+   NAVIGATION / ROUTING
+   ============================================================ */
+function navigate(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  renderCurrentView();
+  window.scrollTo(0, 0);
+}
+function renderCurrentView() {
+  if (currentView === 'today') renderToday();
+  else if (currentView === 'week') renderWeek();
+  else if (currentView === 'plan') renderPlan();
+  else if (currentView === 'progress') renderProgress();
+  else if (currentView === 'reference') renderReference();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init() {
+  // Header week label (initial, updated again in renderToday)
+  const cur = currentWeekIndex(state.settings);
+  document.getElementById('header-week').textContent = cur === 0 ? 'Program starts ' + state.settings.startDate : (cur > 52 ? 'Program complete' : 'Week ' + cur + ' / 52');
+
+  // Nav
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.onclick = () => navigate(btn.dataset.view);
+  });
+
+  // Settings
+  document.getElementById('settings-btn').onclick = openSettings;
+  document.getElementById('modal-root').onclick = (e) => {
+    if (e.target.id === 'modal-root') closeSettings();
+  };
+
+  // Expose a few funcs to window for inline onclick attrs
+  window.navigate = navigate;
+  window.openSettings = openSettings;
+  window.closeSettings = closeSettings;
+  window.handleSettingsSave = handleSettingsSave;
+  window.handleExport = handleExport;
+  window.handleImportClick = handleImportClick;
+  window.handleResetData = handleResetData;
+  window.handleBwLog = handleBwLog;
+
+  renderToday();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
